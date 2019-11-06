@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EvxWebAppCore.wwwroot
+namespace EvxWebAppCore.Common
 {
     public class APIRequestHelper
     {
@@ -23,7 +23,7 @@ namespace EvxWebAppCore.wwwroot
                 using (HttpClient client = new HttpClient())
                 {
                     HttpRequestMessage requestMessage = new HttpRequestMessage();
-                    requestMessage.RequestUri = new Uri($"{data.APIBaseAddress}{data.Paramters}"); //URL of APi method
+                    requestMessage.RequestUri = new Uri($"{data.APIBaseAddress}{data.FunctionName}{data.Paramters}"); //URL of APi method
                     requestMessage.Method = data.Method;
                     if (data.JSONData != null)
                         requestMessage.Content = new StringContent(data.JSONData, Encoding.UTF8, data.ContentType);

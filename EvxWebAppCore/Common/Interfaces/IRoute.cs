@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EvxWebAppCore.Common.Interfaces
 {
-    public interface ILogin
+    public interface IRoute
     {
-        Task<bool> LoginAttempt(Dictionary<string, string> Credentials);
+        Task<List<RouteModel>> GetRoute();
     }
 }

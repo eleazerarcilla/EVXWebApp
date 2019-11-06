@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EvxWebAppCore.Common;
 using EvxWebAppCore.Common.Interfaces;
 using EvxWebAppCore.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -13,12 +14,11 @@ namespace EvxWebAppCore.Controllers
 {
     public class HomeController : Controller
     {
+        public const string SessionName = "user";
         private readonly ILogin _loginRepository;
-        private readonly RequestData _requestData;
-        public HomeController(ILogin loginRepository, IOptions<RequestData> requestData)
+        public HomeController(ILogin loginRepository)
         {
-            _loginRepository = loginRepository;
-            _requestData = requestData.Value;
+            _loginRepository = loginRepository;          
         }
         public IActionResult Index()
         {
@@ -29,7 +29,7 @@ namespace EvxWebAppCore.Controllers
         {
             try
             {
-                return Ok(await _loginRepository.LoginAttempt(_requestData, Credentials));
+                return Ok(await _loginRepository.LoginAttempt(Credentials));
             }catch(Exception ex)
             {
                 return BadRequest(ex);

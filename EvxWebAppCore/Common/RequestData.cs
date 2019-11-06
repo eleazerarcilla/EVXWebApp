@@ -13,5 +13,6 @@ namespace EvxWebAppCore.Common
         public string Paramters { get; set; }
         public string JSONData { get; set; }
         public string ContentType { get; set; }
+        public string FunctionName { get; set; }
     }
 }

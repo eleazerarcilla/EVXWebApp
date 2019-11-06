@@ -43,6 +43,7 @@ namespace EvxWebAppCore
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ILogin, LoginRepository>();
+            services.AddSingleton<IRoute, RouteRepository>();
             return services.BuildServiceProvider();
         }
 
