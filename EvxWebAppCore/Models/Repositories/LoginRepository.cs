@@ -23,24 +23,15 @@ namespace EvxWebAppCore.Models.Repositories
         {
             requestData = _requestData.Value;
         }
-        public async Task<bool> LoginAttempt(Dictionary<string, string> Credentials)
+        public async Task<bool> LoginValidation(UserDetailModel user, Dictionary<string, string> Credentials)
         {
             try
             {
                 string username = Credentials.GetValueOrDefault("uname").ToString(), password = Credentials.GetValueOrDefault("pword").ToString();
                 using (MD5 md5hash = MD5.Create())
                 {
-                    UserDetailModel result = JsonConvert.DeserializeObject<UserDetailModel>(await new APIRequestHelper().SendRequest(
-                     new RequestData
-                     {
-                         APIBaseAddress = requestData.APIBaseAddress,
-                         ContentType = requestData.ContentType,
-                         Method = HttpMethod.Get,
-                         FunctionName = "users/getUserDetails.php",
-                         Paramters = $"?username={username}&emailAddress={password}"
-                     }));
-                    return await Task.FromResult(GlobalHelpers.VerifyMd5Hash(md5hash, password, result.password)
-                        && result.userType == GlobalEnums.UserTypes.Administrator.ToString());
+                    return await Task.FromResult(GlobalHelpers.VerifyMd5Hash(md5hash, password, user.password)
+                        && user.userType == GlobalEnums.UserTypes.Administrator.ToString());
                 }
             }
             catch (Exception ex)
@@ -48,6 +39,27 @@ namespace EvxWebAppCore.Models.Repositories
                 _logger.Error(ex);
             }
             return false;
+        }
+        public async Task<UserDetailModel> GetUserDetails(Dictionary<string, string> Credentials)
+        {
+            try
+            {
+                string username = Credentials.GetValueOrDefault("uname").ToString(), password = Credentials.GetValueOrDefault("pword").ToString();
+                return await Task.FromResult(JsonConvert.DeserializeObject<UserDetailModel>(await new APIRequestHelper().SendRequest(
+                     new RequestData
+                     {
+                         APIBaseAddress = requestData.APIBaseAddress,
+                         ContentType = requestData.ContentType,
+                         Method = HttpMethod.Get,
+                         FunctionName = "users/getUserDetails.php",
+                         Paramters = $"?username={username}&emailAddress={password}"
+                     })));
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return null;
         }
     }
 }

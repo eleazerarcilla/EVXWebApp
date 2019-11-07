@@ -1,0 +1,23 @@
+﻿@using EvxWebAppCore.Models
+@model UserDetailModel
+@{
+    bool IsLoggedIn = Model != null ? true : false;
+}
+<nav class="navbar navbar-light" style="background-color:#013243;">
+    <a class="navbar-brand" href="#" style="color:white;">EVXperience Web</a>
+    <div class="navb"></div>
+    <div class="form-inline my-2 my-lg-2">
+        <select id="MainRouteSelect" class="form-control" onchange="ProcessSelectedRoute(this);">
+            <option>Select Route...</option>
+        </select>&nbsp;
+        @{
+            if (IsLoggedIn)
+            {
+                <label class="NavBarUserName">
+                    &nbsp;@Model.username&nbsp;
+                </label>
+            }
+        }
+        <button class="btn @(IsLoggedIn ? "btn-danger": "btn-success") my-2 my-sm-0" data-toggle="modal" @(IsLoggedIn ? "onClick=InitiateLogout()": "data-target=#LoginModal")>@(IsLoggedIn ? "Logout" : "Login")</button>
+    </div>
+</nav>

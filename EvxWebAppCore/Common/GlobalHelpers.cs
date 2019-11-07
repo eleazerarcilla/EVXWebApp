@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -26,6 +28,18 @@ namespace EvxWebAppCore.Common
         {
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             return 0 == comparer.Compare(GetMd5Hash(md5Hash, input), hash);
+        }
+        public static void SessionSet<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+
+        public static T SessionGet<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+
+            return value == null ? default(T) :
+                JsonConvert.DeserializeObject<T>(value);
         }
 
     }

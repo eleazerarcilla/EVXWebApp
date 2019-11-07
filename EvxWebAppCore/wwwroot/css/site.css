@@ -1,14 +1,21 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    padding-bottom: 20px;
+    min-height: 100vh;
 }
-
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
+.NavBarUserName{
+    color:white;
+}
+#map {
+    height: 100% !important;
+    width: 100% !important;
+    position: absolute !important;
+}
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+  min-height:100vh;
+}
+.navbar{
+    margin-bottom:0 !important;
 }
 
 /* Carousel */

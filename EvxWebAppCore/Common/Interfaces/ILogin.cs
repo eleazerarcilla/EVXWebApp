@@ -8,6 +8,7 @@ namespace EvxWebAppCore.Common.Interfaces
 {
     public interface ILogin
     {
-        Task<bool> LoginAttempt(Dictionary<string, string> Credentials);
+        Task<bool> LoginValidation(UserDetailModel user, Dictionary<string, string> Credentials);
+        Task<UserDetailModel> GetUserDetails(Dictionary<string, string> Credentials);
     }
 }

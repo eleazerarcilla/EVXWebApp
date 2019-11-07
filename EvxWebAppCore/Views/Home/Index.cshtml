@@ -1,7 +1,24 @@
-﻿@{
+﻿@using EvxWebAppCore.Models
+@model UserDetailModel
+@{
     ViewData["Title"] = "MyRyde";
 }
-<link rel="stylesheet"  href="~/css/app/Index.css" asp-append-version="true"/>
-<div class="container-fluid">
-   <h2 class="maps-header">Live Map</h2>
+<link rel="stylesheet" href="~/css/app/Index.css" asp-append-version="true" />
+<div class="body-content" id="mapBody">
+    <div id="content"><div id="map"></div></div>
+    <div id="infowindow-content">
+        <img src="" width="16" height="16" id="place-icon">
+        <span id="place-name" class="title"></span><br>
+        <span id="place-address"></span>
+    </div>
 </div>
+@{
+    if (Model != null)
+    {
+        <div id="cont"></div>
+    }
+}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDP9lU4cOSwfITjgMeqiG3tRV1-_pZJEWQ&libraries=places&callback=initMap"
+        async defer></script>
+<script src="~/lib/fab/dist/js/fab.js"></script>
+<script src="~/js/app/Index/Index.js" asp-append-version="true"></script>
