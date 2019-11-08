@@ -1,108 +1,6 @@
-﻿var map;
-function initMap() {
-    var phpStringForStationMarker = window.location.href;
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-
-    });
-    initialLocation = new google.maps.LatLng(14.42576, 121.03898);
-    map.setCenter(initialLocation);
-    //    if (navigator.geolocation) {
-    //  navigator.geolocation.getCurrentPosition(function (position) {
-    //      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //      map.setCenter(initialLocation);
-    //  });
-    // }
-
-    var icons = {
-        station: {
-            icon: phpStringForStationMarker + 'images/stationmarker.png'
-        }
-    };
-    for (var i = 0; i < stationList.length; i++) {
-        marker = new google.maps.Marker({
-            position: new google.maps.LatLng(stationList[i].Lat, stationList[i].Lng),
-            icon: icons['station'].icon,
-            map: map
-        });
-    }
-    var card = document.getElementById('pac-card');
-    var input = document.getElementById('pac-input');
-    var input_d = document.getElementById('pac-input-d');
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-
-    function setupClickListener(id) {
-        var radioButton = document.getElementById(id);
-    }
-
-    setupClickListener('changetype-all', []);
-    setupClickListener('changetype-address', ['address']);
-    setupClickListener('changetype-establishment', ['establishment']);
-    setupClickListener('changetype-geocode', ['geocode']);
-}
-var markers = new Array();
-var currentId = 0;
-window.setInterval(
-    function () {
-        var phpStringForStationMarker;
-        var icons = {
-            vehicle: {
-                icon: phpStringForStationMarker + 'images/vehiclemarker.png'
-            }
-        };
-
-        var uniqueId = function () {
-            return ++currentId;
-        };
-
-        var createMarker = function (latitude, longitude) {
-            var id = uniqueId(); // get new id
-            var marker = new google.maps.Marker({ // create a marker and set id
-                id: id,
-                position: new google.maps.LatLng(latitude, longitude),
-                map: map,
-                icon: icons['vehicle'].icon
-            });
-            var icon = marker.getIcon();
-            icon.rotation = 10;
-            marker.setIcon(icon);
-            console.log(marker);
-
-
-            markers[id] = marker; // cache created marker to markers object with id as its key
-            return marker;
-        };
-        var clearVehicleMarker = function () {
-
-            markers.forEach(function (marker) {
-                marker.setMap(null);
-            });
-
-
-        }
-
-
-        $.ajax(
-            {
-                type: "GET",
-                beforeSend: function (xhr) {
-                    /* Authorization header */
-                    xhr.setRequestHeader("Authorization", "Basic " + btoa("meadumandal@yahoo.com:password"));
-                },
-                url: "https://samm-6bab0.firebaseio.com/drivers.json",
-                success: function (result) {
-                    clearVehicleMarker();
-
-                    Object.keys(result).forEach(function (key) {
-                        if (result[key].PrevLat != result[key].Lat && result[key].PrevLng != result[key].Lng) {
-                            createMarker(result[key].Lat, result[key].Lng);
-                        }
-                    });
-                }
-            });
-    }, 5000);
+﻿var GlobalManageModalSelectedLineName;
 var fab = new Fab({
-    selector: "#cont",
+    selector: "#fab",
     button: {
         style: "large teal",
         html: ""
@@ -118,47 +16,47 @@ var fab = new Fab({
     buttons: [
         {
             button: {
-                style: "small yellow",
-                html: ""
+                style: "large yellow",
+                html: "GPS"
             },
             icon: {
                 style: "map marker alternate icon",
                 html: ""
             },
             onClick: function () {
-                alert("GPS DEVICES");
+                Manage('Devices', $("#AdminID").val());
             }
         },
         {
             button: {
-                style: "small red",
-                html: ""
+                style: "large red",
+                html: "Lines"
             },
             icon: {
                 style: "road icon",
                 html: ""
             },
             onClick: function () {
-                alert("LINES");
+                Manage('Lines', $("#AdminID").val());
             }
         },
         {
             button: {
-                style: "small blue",
-                html: ""
+                style: "large blue",
+                html: "Drivers"
             },
             icon: {
                 style: "user icon",
                 html: ""
             },
             onClick: function () {
-              alert("DRIVERS");
+                Manage('Drivers', $("#AdminID").val());
             }
         },
         {
             button: {
-                style: "small green",
-                html: ""
+                style: "large green",
+                html:"Reports"
             },
             icon: {
                 style: "chart line icon",
@@ -176,4 +74,61 @@ var fab = new Fab({
 
     }
 });
-
+function Manage(type, dynamicVar1, dynamicVar2) {
+    ClearManageModalContents();
+    $("#ManageModal").modal('show');
+    switch (type) {
+        case 'Lines':
+            $("#ManageModalTitle").text("Lines");
+            $.get("/api/line/ViewLines/" + dynamicVar1, function (result) {
+                ToggleLoader();
+                $('#DynamicContent').html(result);
+            });
+            break;
+        case 'Drivers':
+            $("#ManageModalTitle").text("Drivers");
+            $.get("/api/driver/ViewDrivers/" + dynamicVar1, function (result) {
+                ToggleLoader();
+                $('#DynamicContent').html(result);
+            });
+            break;
+        case 'Devices':
+            $("#ManageModalTitle").text("GPS Devices");
+            $.get("/api/device/ViewDevices/", function (result) {
+                ToggleLoader();
+                $('#DynamicContent').html(result);
+            });
+            break;
+        case 'Stations':
+            $("#ManageModalTitle").text("Stations under " + dynamicVar2);
+            $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Routes');");
+            $('#ManageModalBackButton').css('display', 'block');
+            $.get("/api/destination/ViewStations/" + dynamicVar1, function (result) {
+                ToggleLoader();
+                $('#DynamicContent').html(result);
+            });
+            break;
+        case 'Routes':
+            $("#ManageModalTitle").text("Routes under " + dynamicVar2);
+            $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Lines');");
+            $('#ManageModalBackButton').css('display', 'block');
+            $.get("/api/route/ViewRoutes?LineID=" + dynamicVar1, function (result) {
+                ToggleLoader();
+                $('#DynamicContent').html(result);
+            });
+            break;
+    }
+}
+function ClearManageModalContents() {
+    $("#Loader").css('display', 'block');
+    $('#ManageModalBackButton').css('display', 'none');
+    $("#DynamicContent").text('');
+}
+function ManageModalBackButtonClicked(type) {
+    switch (type) {
+        case 'Lines':
+            Manage('Lines', $("#AdminID").val()); break;
+        case 'Routes':
+            Manage('Routes', $("#HiddenDynamicLineID").val()); break;
+    }
+}

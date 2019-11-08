@@ -19,17 +19,27 @@ namespace EvxWebAppCore.Models.Repositories
         {
             requestData = _requestData.Value;
         }
-        public async Task<List<RouteModel>> GetRoute()
+        public async Task<List<RouteModel>> GetRoute(int LineID)
         {
             try
             {
+                if (LineID == 0)
+                    return JsonConvert.DeserializeObject<List<RouteModel>>(await new APIRequestHelper().SendRequest(
+                        new RequestData
+                        {
+                            APIBaseAddress = requestData.APIBaseAddress,
+                            Method = HttpMethod.Get,
+                            FunctionName = "routes/getRoutes.php"
+                        }));
                 return JsonConvert.DeserializeObject<List<RouteModel>>(await new APIRequestHelper().SendRequest(
-                    new RequestData{
-                        APIBaseAddress = requestData.APIBaseAddress,
-                        Method = HttpMethod.Get,
-                        FunctionName = "routes/getRoutes.php"
-                    }));
-            }catch(Exception ex)
+                        new RequestData
+                        {
+                            APIBaseAddress = requestData.APIBaseAddress,
+                            Method = HttpMethod.Get,
+                            FunctionName = "routes/getRoutes.php"
+                        })).Where(x => x.TableLineID == LineID).Select(x => x).ToList();
+            }
+            catch (Exception ex)
             {
                 _logger.Error(ex);
             }

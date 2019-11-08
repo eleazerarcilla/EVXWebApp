@@ -11,24 +11,24 @@ using System.Threading.Tasks;
 
 namespace EvxWebAppCore.Models.Repositories
 {
-    public class DestinationRepository: IDestination
+    public class DriverRepository: IDriver
     {
         Logger _logger = LogManager.GetLogger("EVX-APIRequestHelper");
         private readonly RequestData _requestData;
-        public DestinationRepository(IOptions<RequestData> requestData)
+        public DriverRepository(IOptions<RequestData> requestData)
         {
             _requestData = requestData.Value;
         }
-        public async Task<List<DestinationModel>> GetDestinations(int RouteID)
+        public async Task<List<UserDetailModel>> GetDrivers(int AdminID)
         {
             try
             {
-                return await Task.FromResult(JsonConvert.DeserializeObject<List<DestinationModel>>(await new APIRequestHelper().SendRequest(new RequestData
+                return await Task.FromResult(JsonConvert.DeserializeObject<List<UserDetailModel>>(await new APIRequestHelper().SendRequest(new RequestData
                 {
                     APIBaseAddress = _requestData.APIBaseAddress,
                     Method = HttpMethod.Get,
-                    FunctionName = "destinations/",
-                    Parameters = RouteID == 0 ? "getDestinations.php" : $"getDestinationsByRouteID.php?routeID={RouteID}"
+                    FunctionName = "users/driver/get.php",
+                    Parameters = $"?adminUserID={AdminID}"
                 })));
             }catch(Exception ex)
             {

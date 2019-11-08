@@ -52,7 +52,7 @@ namespace EvxWebAppCore.Models.Repositories
                          ContentType = requestData.ContentType,
                          Method = HttpMethod.Get,
                          FunctionName = "users/getUserDetails.php",
-                         Paramters = $"?username={username}&emailAddress={password}"
+                         Parameters = $"?username={username}&emailAddress={password}"
                      })));
             }
             catch(Exception ex)

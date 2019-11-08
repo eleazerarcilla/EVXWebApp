@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EvxWebAppCore.Common;
@@ -26,6 +27,7 @@ namespace EvxWebAppCore
                   .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                   .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                   .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -44,7 +46,7 @@ namespace EvxWebAppCore
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -53,7 +55,10 @@ namespace EvxWebAppCore
             services.AddSingleton<ILogin, LoginRepository>();
             services.AddSingleton<IRoute, RouteRepository>();
             services.AddSingleton<ILine, LineRepository>();
+            services.AddSingleton<IDriver, DriverRepository>();
             services.AddSingleton<IDestination, DestinationRepository>();
+            services.AddSingleton<IDevice, DeviceRepository>();
+
             return services.BuildServiceProvider();
         }
 
@@ -66,6 +71,7 @@ namespace EvxWebAppCore
 
             logger.AddConsole(Configuration.GetSection("Logging"));
             logger.AddDebug();
+
             logger.AddNLog();
 
             if (env.IsDevelopment())

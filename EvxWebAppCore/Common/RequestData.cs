@@ -10,7 +10,7 @@ namespace EvxWebAppCore.Common
     {
         public string APIBaseAddress { get; set; }
         public HttpMethod Method { get; set; }
-        public string Paramters { get; set; }
+        public string Parameters { get; set; }
         public string JSONData { get; set; }
         public string ContentType { get; set; }
         public string FunctionName { get; set; }

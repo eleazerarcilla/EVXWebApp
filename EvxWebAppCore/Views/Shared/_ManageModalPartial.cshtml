@@ -1,0 +1,19 @@
+﻿<script type="text/javascript" src="~/js/app/Line/_LineModal.js"></script>
+<div data-backdrop="static" data-keyboard="false" class="modal fade bd-example-modal-lg" id="ManageModal" tabindex="-1" role="dialog" aria-labelledby="LineModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="ManageModalBackButton" class="btn btn-outline-primary btn-back-modal" style="display:none; font-weight:bold;">< Back</button>
+                <h1 class="modal-title" id="ManageModalTitle"></h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <partial name="_Loader" />
+                <div id="LoaderContent"></div>
+                <div id="DynamicContent"></div>
+            </div>
+        </div>
+    </div>
+</div>

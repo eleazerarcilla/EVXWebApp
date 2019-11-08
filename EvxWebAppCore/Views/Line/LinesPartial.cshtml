@@ -1,0 +1,8 @@
+﻿@using EvxWebAppCore.Models
+@model List<LineModel>
+@foreach(LineModel entry in Model)
+{
+   <div  class="button-list-default-margin">
+       <button  type="button" class="btn btn-secondary btn-lg btn-block" onclick="Manage('Routes',@(entry.LineID),'@(entry.LineName)')">@entry.LineName</button>
+   </div>
+}

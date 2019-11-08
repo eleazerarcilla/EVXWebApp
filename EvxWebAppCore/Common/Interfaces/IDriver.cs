@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EvxWebAppCore.Common.Interfaces
 {
-    public interface IRoute
+    public interface IDriver
     {
-        Task<List<RouteModel>> GetRoute(int LineID);
+        Task<List<UserDetailModel>> GetDrivers(int AdminID);
     }
 }

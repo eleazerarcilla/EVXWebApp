@@ -41,3 +41,12 @@ body {
         display: none;
     }
 }
+.button-list-default-margin{
+    margin-bottom:2px;
+}
+.clickable{
+    cursor:pointer;
+}
+.btn-back-modal{
+    margin-top:5px;
+}

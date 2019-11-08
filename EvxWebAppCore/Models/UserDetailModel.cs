@@ -8,7 +8,7 @@ namespace EvxWebAppCore.Models
     public class UserDetailModel
     {
         public string username { get; set; }
-        public string usernemailAddressame { get; set; }
+        public string emailAddress { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string UserID { get; set; }

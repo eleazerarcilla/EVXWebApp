@@ -2,8 +2,10 @@
 @model UserDetailModel
 @{
     ViewData["Title"] = "MyRyde";
+    bool IsLoggedIn = Model != null ? true : false;
 }
 <link rel="stylesheet" href="~/css/app/Index.css" asp-append-version="true" />
+<input type="hidden" id="AdminID" value="@(IsLoggedIn ? Model.UserID: null)"/>
 <div class="body-content" id="mapBody">
     <div id="content"><div id="map"></div></div>
     <div id="infowindow-content">
@@ -13,11 +15,13 @@
     </div>
 </div>
 @{
-    if (Model != null)
+    if (IsLoggedIn)
     {
-        <div id="cont"></div>
+        <div id="fab"></div>
+        <partial name="_ManageModalPartial"/>;
     }
 }
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDP9lU4cOSwfITjgMeqiG3tRV1-_pZJEWQ&libraries=places&callback=initMap"
         async defer></script>
 <script src="~/lib/fab/dist/js/fab.js"></script>

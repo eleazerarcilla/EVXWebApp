@@ -27,5 +27,10 @@ namespace EvxWebAppCore.Controllers
                 return BadRequest(ex);
             }
         }
+        [HttpGet("ViewLines/{adminID}")]
+        public async Task<IActionResult> ViewLines(int adminID = 0)
+        {
+            return PartialView("LinesPartial", await _lineRepository.GetLines(adminID));
+        }
     }
 }

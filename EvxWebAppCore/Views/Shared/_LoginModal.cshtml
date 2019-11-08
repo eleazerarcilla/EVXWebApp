@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered mw-100 w-25" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                <h1 class="modal-title" id="exampleModalLabel">Login</h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,7 +12,7 @@
                 <input id="password" type="password" class="form-control" placeholder="password" required/>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" onclick="InitiateLogin('@Url.Action("ProcessLogin", "Home")')">Login</button>
+                <button type="button" id="LoginButton" class="btn btn-primary" onclick="InitiateLogin('@Url.Action("ProcessLogin", "Home")')">Login</button>
             </div>
         </div>
     </div>

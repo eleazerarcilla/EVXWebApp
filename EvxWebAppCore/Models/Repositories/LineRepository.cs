@@ -29,7 +29,7 @@ namespace EvxWebAppCore.Models.Repositories
                         APIBaseAddress = _requestData.APIBaseAddress,
                         Method = HttpMethod.Get,
                         FunctionName = "lines/getLines.php",
-                        Paramters = adminID == 0 ? null : $"?adminUserID={adminID}"
+                        Parameters = adminID == 0 ? null : $"?adminUserID={adminID}"
                     })));
             }
             catch (Exception ex)

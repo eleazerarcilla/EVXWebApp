@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EvxWebAppCore.Controllers
 {
     [Route("api/[controller]")]
-    public class DestinationController: Controller
+    public class DestinationController : Controller
     {
         private readonly IDestination _destinationRepository;
         public DestinationController(IDestination destinationRepository)
@@ -21,7 +21,20 @@ namespace EvxWebAppCore.Controllers
             try
             {
                 return Ok(await _destinationRepository.GetDestinations(RouteID));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("ViewStations/{RouteID}")]
+        public async Task<IActionResult> ViewStations(int RouteID = 0)
+        {
+            try
+            {
+                return PartialView("StationsPartial", await _destinationRepository.GetDestinations(RouteID));
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }

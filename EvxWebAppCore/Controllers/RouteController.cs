@@ -17,10 +17,10 @@ namespace EvxWebAppCore.Controllers
             _routeRepository = routeRepository;
         }
 
-        [HttpGet("GetRoutes")]
-        public async Task<IActionResult> GetRoutes()
+        [HttpGet("ViewRoutes")]
+        public async Task<IActionResult> ViewRoutes(int LineID = 0)
         {
-            return Json(await _routeRepository.GetRoute());
+            return PartialView("RoutesPartial", await _routeRepository.GetRoute(LineID));
         }
     }
 }

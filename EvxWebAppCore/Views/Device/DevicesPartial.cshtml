@@ -1,0 +1,10 @@
+﻿@using EvxWebAppCore.Models
+@model List<DeviceModel>
+@foreach (DeviceModel entry in Model)
+{
+    bool IsOffline = entry.DeviceStatus.Contains("offline", StringComparison.CurrentCultureIgnoreCase) ? true : false;
+    <div class="alert alert-@(IsOffline ? "danger" : "success")" role="alert">
+        <h3 class="alert-heading">@(entry.DeviceName)</h3>
+        <p>@entry.DeviceStatus</p>
+    </div>
+}

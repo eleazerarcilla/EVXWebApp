@@ -11,7 +11,7 @@ namespace EvxWebAppCore.Models
         [JsonProperty("ID")]
         public int RouteID { get; set; }
         [JsonProperty("tblLineID")]
-        public string TableLineID { get; set; }
+        public int TableLineID { get; set; }
         [JsonProperty("routeName")]
         public string RouteName { get; set; }
         [JsonProperty("noOfStations")]
