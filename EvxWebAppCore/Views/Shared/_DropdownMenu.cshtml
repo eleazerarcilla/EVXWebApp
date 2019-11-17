@@ -14,11 +14,33 @@
         <div class="dropdown-option dropdown_edit" onclick="Manage('LineForm','@JsonConvert.SerializeObject(lineModel)')"> Edit Line </div>
         <div class="dropdown-option dropdown_delete" onclick="Delete(@lineModel.LineID, '@Model.RecordType')">Delete </div>
 
-        </div>
+    </div>
+}
+@if (Model.RecordType.Equals(GlobalEnums.RecordType.Route))
+{
+    RouteModel routeModel = (RouteModel)Model.Object;
+    <div id='@("dropdown" + routeModel.RouteID)' style="display:none" class="dropdown">
+
+        <div class="dropdown-option dropdown_view" onclick="Manage('Stations', @routeModel.RouteID, '@routeModel.RouteName')">View Stations</div>
+        <div class="dropdown-option dropdown_edit" onclick="Manage('RouteForm','@JsonConvert.SerializeObject(routeModel)')"> Edit Route </div>
+        <div class="dropdown-option dropdown_delete" onclick="Delete(@routeModel.RouteID, '@Model.RecordType')">Delete </div>
+
+    </div>
+}
+
+@if (Model.RecordType.Equals(GlobalEnums.RecordType.Station))
+{
+    StationModel stationModel = (StationModel)Model.Object;
+    <div id='@("dropdown" + stationModel.DestinationID)' style="display:none" class="dropdown">
+
+        <div class="dropdown-option dropdown_edit" onclick="Manage('StationForm','@JsonConvert.SerializeObject(stationModel)')"> Edit Station </div>
+        <div class="dropdown-option dropdown_delete" onclick="Delete(@stationModel.DestinationID, '@Model.RecordType')">Delete </div>
+
+    </div>
 }
 
 <script>
-    
+
 </script>
 <style>
     .dropdown {

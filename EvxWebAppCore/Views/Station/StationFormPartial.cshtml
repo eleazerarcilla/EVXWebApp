@@ -4,12 +4,98 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 <h2>Edit Pickup/Dropoff Station</h2>
-<input type="text" id="txtName" placeholder="Name" class="form-control" value="@Model.Description" />
-<br />
-<input type="number" id="txtLatitude" placeholder="Latitude" class="form-control" value="@Model.Latitude" />
-<br />
-<input type="number" id="txtLongitude" placeholder="Longitude" value="@Model.Longitude" class="form-control"/>
-<br />
-<button type="button" class="btn btn-success">Update Station</button>
-<button type="button" class="btn btn-danger">Delete Station</button>
+<form method="post" action="" id="frmStation" accept-charset="utf-8">
+    
+    <input type="text" id="txtName" placeholder="Name" class="form-control" value="@Model.Description" />
+    <br />
+    <input type="number" id="txtLatitude" placeholder="Latitude" class="form-control" value="@Model.Latitude" />
+    <br />
+    <input type="number" id="txtLongitude" placeholder="Longitude" value="@Model.Longitude" class="form-control" />
+    <br />
+    
+    <input type="checkbox" id="chkIsMainTerminal" value="" checked="@(Model.IsMainTerminal==1?true:false)"/>Mark this as main pick-up/drop-off station
+    @if (Model.DestinationID != 0)
+    {
+        <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Station" />
+    }
+    else
+    {
+        <input type="submit" class="btn btn-success" id="btnAdd" value="Add Station" />
+    }
+
+
+</form>
+<script>
+     $("#frmStation").submit(function (e) {
+
+        e.preventDefault();
+        var isMainTerminal = $("#chkIsMainTerminal:checked").length > 0 ? 1 : 0;
+         if ($("#btnAdd").length) {
+             
+             Add($('#txtName').val(), $("#txtLatitude").val(), $("#txtLongitude").val(), $("#HiddenDynamicRouteId").val(), "", isMainTerminal);
+        }
+        else if ($("#btnUpdate").length) {
+            Update(@Model.DestinationID, $('#txtName').val(), $("#txtLatitude").val(), $("#txtLongitude").val(), $("#HiddenDynamicRouteId").val(), "", isMainTerminal);
+        }
+    })
+    function Update(id, name, lat, lng, tblRouteID, direction,isMainTerminal) {
+     
+        $.ajax({
+            url: window.location.href + "api/Station/UpdateStation",
+            method: "POST",
+            data: { id:id, name:name, lat:lat, lng:lng, tblRouteID:tblRouteID, direction:direction,isMainTerminal:isMainTerminal },
+            beforeSend: function () {
+                $("#btnUpdate").html("Updating Station...");
+                $("#btnUpdate").attr("disabled", true);
+            },
+            success: function (result) {
+                if (result.status == "true") {
+                    $("#btnUpdate").html("Update Station");
+                    $("#btnUpdate").attr("disabled", false);
+                    alert('Station successfully updated');
+                }
+                else {
+                     alert(result.message);
+                     $("#btnUpdate").html("Update Station");
+                     $("#btnUpdate").attr("disabled", false);
+                }
+               
+            },
+            error: function (result) {
+
+            }
+
+        })
+    }
+    
+    function Add(value, lat, lng, tblRouteID, direction, isMainTerminal) {
+         $.ajax({
+            url: window.location.href + "api/Station/AddStation",
+            method: "POST",
+            data: { value: value, lat:lat, lng:lng, tblRouteID:tblRouteID, direction:direction, isMainTerminal:isMainTerminal },
+            beforeSend: function () {
+                $("#btnAdd").html("Adding Station...");
+                $("#btnAdd").attr("disabled", true);
+            },
+             success: function (result) {
+                 
+                 if (result.status == "true") {
+                     alert('Station successfully added!');
+                     Manage('Stations', $("#HiddenDynamicRouteId").val());
+                 }
+                 else {
+                     alert(result.message);
+                     $("#btnAdd").html("Add Station");
+                     $("#btnAdd").attr("disabled", false);
+                 }
+                 
+            },
+            error: function (result) {
+                alert("An error occured");
+            }
+
+        })
+    }
+</script>

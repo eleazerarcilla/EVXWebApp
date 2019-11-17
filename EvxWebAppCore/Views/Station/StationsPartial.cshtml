@@ -1,4 +1,7 @@
 ﻿@using EvxWebAppCore.Models
+@using EvxWebAppCore.ViewModel
+@using EvxWebAppCore.Common
+@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
 @model List<StationModel>
 <input type="hidden" id="HiddenDynamicLineID" value="@Model.FirstOrDefault().LineID" />
@@ -7,8 +10,20 @@
     {
 
         <div class="button-list-default-margin">
-            <button type="button" class="btn btn-secondary btn-lg btn-block"
-                     onclick="Manage('StationForm','@JsonConvert.SerializeObject(entry)')">@entry.Description</button>
+            @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Station })
+            <button type="button" class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.DestinationID)">@entry.Description</button>
+
         </div>
     }
+    @{ StationModel emptyStationModel = new StationModel(0, @Model.FirstOrDefault().TableRouteID, "", "", 
+           0, "", 0,0, 0,0, 1,@Model.FirstOrDefault().RouteName, @Model.FirstOrDefault().LineName,
+           @Model.FirstOrDefault().LineID);}
+
+    <div class="addnewrow">
+        <button type="button" class="btn btn-lg btn-block addnewrow"
+                onclick="Manage('StationForm','@JsonConvert.SerializeObject(emptyStationModel)')">
+            <span class="glyphicon glyphicon-plus"></span>   Add New Station
+        </button>
+    </div>
 </div>
+<script type="text/javascript" src="~/js/app/Shared/_dropdown.js"></script>

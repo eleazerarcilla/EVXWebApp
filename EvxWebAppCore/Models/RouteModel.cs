@@ -8,6 +8,14 @@ namespace EvxWebAppCore.Models
 {
     public class RouteModel
     {
+
+        public RouteModel(int routeID, int tableLineID, string routeName, int stationCount)
+        {
+            this.RouteID = routeID;
+            this.TableLineID = tableLineID;
+            this.RouteName = routeName;
+            this.StationCount = stationCount;
+        }
         [JsonProperty("ID")]
         public int RouteID { get; set; }
         [JsonProperty("tblLineID")]

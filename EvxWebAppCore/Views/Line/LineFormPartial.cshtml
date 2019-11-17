@@ -36,12 +36,13 @@
 
 <script>
     $("#frmLine").submit(function (e) {
-        
+
         e.preventDefault();
-        if ($("#btnAdd")) {
+        
+        if ($("#btnAdd").length) {
             Add($('#txtLineName').val(), $('#selAdmin option:selected').attr('id'))
         }
-        else if ($("#btnUpdate")) {
+        else if ($("#btnUpdate").length) {
             Update(@Model.Line.LineID, $('#txtLineName').val(), $('#selAdmin option:selected').attr('id'));
         }
     })
@@ -60,7 +61,7 @@
                 if (result.status == "true") {
                     $("#btnUpdate").html("Update Line");
                     $("#btnUpdate").attr("disabled", false);
-                    alert('Line successfully update');
+                    alert('Line successfully updated');
                 }
                 else {
                      alert(result.message);

@@ -46,5 +46,54 @@ namespace EvxWebAppCore.Controllers
         {
             return PartialView(station);
         }
+
+        [HttpPost("UpdateStation")]
+        public async Task<IActionResult> UpdateStation(int id, 
+            string name, 
+            double lat, double lng,
+            int tblRouteID,
+            string direction,
+            int isMainterminal)
+        {
+            try
+            {
+                return Ok(await _stationRepository.UpdateStation(id, name, lat, lng, tblRouteID, direction, isMainterminal));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+        [HttpPost("AddStation")]
+        public async Task<IActionResult> AddStation(string value, 
+            double lat, double lng, 
+            int tblRouteID, 
+            string direction, 
+            int isMainterminal)
+        {
+            try
+            {
+                return Ok(await _stationRepository.AddStation(value, lat, lng, tblRouteID, direction, isMainterminal));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+        [HttpGet("DeleteStation")]
+        public async Task<IActionResult> DeleteStation(int destinationid)
+        {
+            try
+            {
+                return Ok(await _stationRepository.DeleteStation(destinationid));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
     }
 }

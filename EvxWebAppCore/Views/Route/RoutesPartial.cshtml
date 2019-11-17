@@ -1,10 +1,23 @@
 ﻿@using EvxWebAppCore.Models
+@using EvxWebAppCore.Common
+@using EvxWebAppCore.ViewModel
+@using Newtonsoft.Json
 @model List<RouteModel>
+    <input type="hidden" id="HiddenDynamicLineID" value="@Model.FirstOrDefault().TableLineID" />
     <div class="scrollable">
         @foreach (RouteModel entry in Model)
         {
             <div class="button-list-default-margin">
-                <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="Manage('Stations',@(entry.RouteID),'@(entry.RouteName)')">@entry.RouteName</button>
+                @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Route })
+                <button type="button" class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.RouteID)">@entry.RouteName</button>
             </div>
         }
+        @{ RouteModel emptyRouteModel = new RouteModel(0, @Model.First().TableLineID, "", 0);}
+        <div class="addnewrow">
+            <button type="button" class="btn btn-lg btn-block addnewrow"
+                    onclick="Manage('RouteForm','@JsonConvert.SerializeObject(emptyRouteModel)')">
+                <span class="glyphicon glyphicon-plus"></span>   Add New Route
+            </button>
+        </div>
     </div>
+    <script type="text/javascript" src="~/js/app/Shared/_dropdown.js"></script>

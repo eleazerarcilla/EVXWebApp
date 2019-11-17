@@ -1,0 +1,90 @@
+﻿@using EvxWebAppCore.Models
+@model RouteModel
+
+<form method="post" action="" id="frmRoute" accept-charset="utf-8">
+    <input type="hidden" id="HiddenDynamicLineID" value="@Model.TableLineID" />
+    <input type="text" class="form-control" id="txtRouteName" value="@Model.RouteName" required />
+    <br />
+    <br />
+    @if (Model.RouteID != 0)
+    {
+        <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Route" />
+    }
+    else
+    {
+        <input type="submit" class="btn btn-success" id="btnAdd" value="Add Route" />
+    }
+
+</form>
+
+<script>
+    $("#frmRoute").submit(function (e) {
+        debugger;
+        
+        e.preventDefault();
+        if ($("#btnAdd").length) {
+            Add($("#HiddenDynamicLineID").val(), $('#txtRouteName').val())
+        }
+        else if ($("#btnUpdate").length) {
+            Update(@Model.RouteID, $('#txtRouteName').val());
+        }
+    })
+    function Update(routeID, newRouteName) {
+        debugger;
+
+        $.ajax({
+            url: window.location.href + "api/Route/UpdateRoute",
+            method: "POST",
+            data: { routeID: routeID, newRouteName: newRouteName },
+            beforeSend: function () {
+                $("#btnUpdate").html("Updating Route...");
+                $("#btnUpdate").attr("disabled", true);
+            },
+            success: function (result) {
+                if (result.status == "true") {
+                    $("#btnUpdate").html("Update Route");
+                    $("#btnUpdate").attr("disabled", false);
+                    alert('Route successfully update');
+                }
+                else {
+                     alert(result.message);
+                     $("#btnUpdate").html("Update Route");
+                     $("#btnUpdate").attr("disabled", false);
+                }
+
+            },
+            error: function (result) {
+
+            }
+
+        })
+    }
+    function Add(lineID, routeName) {
+         $.ajax({
+            url: window.location.href + "api/Route/AddRoute",
+            method: "POST",
+            data: { lineID: lineID, routeName: routeName },
+            beforeSend: function () {
+                $("#btnAdd").html("Adding Route...");
+                $("#btnAdd").attr("disabled", true);
+            },
+             success: function (result) {
+
+                 if (result.status == "true") {
+                     alert('Route successfully added!');
+                     Manage('Routes', $("#HiddenDynamicLineID").val());
+                 }
+                 else {
+                     alert(result.message);
+                     $("#btnAdd").html("Add Route");
+                     $("#btnAdd").attr("disabled", false);
+                 }
+
+            },
+            error: function (result) {
+                alert("An error occured");
+            }
+
+        })
+    }
+</script>

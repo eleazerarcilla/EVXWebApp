@@ -8,6 +8,8 @@ namespace EvxWebAppCore.Models
 {
     public class UserDetailModel
     {
+
+        
         [JsonProperty("username")]
         public string username { get; set; }
         
@@ -19,7 +21,6 @@ namespace EvxWebAppCore.Models
 
         [JsonProperty("lastName")]
         public string lastName { get; set; }
-
 
         /*Because API is sometimes returning UserID or ID...
          Need to refactor API but mobile app will be affected so this is the workaround

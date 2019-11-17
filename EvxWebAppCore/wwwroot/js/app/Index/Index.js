@@ -191,6 +191,48 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
 
             break;
+        case 'RouteForm':
+
+            var line = dynamicVar1;
+            $("#ManageModalTitle").text(dynamicVar1.routeName);
+            $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Routes');");
+            $('#ManageModalBackButton').css('display', 'block');
+            $.ajax({
+                url: "/api/Route/RouteFormPartial",
+                method: "post",
+                contentType: "application/json; charset=utf-8",
+                data: line,
+                success: function (result) {
+                    ToggleLoader();
+                    $('#DynamicContent').html(result);
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            });
+
+            break;
+        case 'StationForm':
+
+            var station = dynamicVar1;
+            $("#ManageModalTitle").text(dynamicVar1.Description);
+            $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Stations');");
+            $('#ManageModalBackButton').css('display', 'block');
+            $.ajax({
+                url: "/api/Station/StationFormPartial",
+                method: "post",
+                contentType: "application/json; charset=utf-8",
+                data: line,
+                success: function (result) {
+                    ToggleLoader();
+                    $('#DynamicContent').html(result);
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            });
+
+            break;
     }
 }
 
@@ -203,7 +245,6 @@ function ManageModalBackButtonClicked(type) {
         case 'Devices':
             Manage('Devices', $("#AdminID").val()); break;
         case 'Stations':
-            
             Manage('Stations', $("#HiddenDynamicRouteId").val()); break;
     }
 }

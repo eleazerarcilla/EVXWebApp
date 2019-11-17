@@ -9,6 +9,25 @@ namespace EvxWebAppCore.Models
 {
     public class StationModel
     {
+        public StationModel(int destinationID, int tableRouteID, string value, string description, int orderOfArrival, string direction,
+            double latitude, double longitude, double distanceFromPreviousStation, int isMainTerminal, int isActive, string routeName,
+            string lineName, int lineID)
+        {
+            this.DestinationID = destinationID;
+            this.TableRouteID = tableRouteID;
+            this.Value = value;
+            this.Description = description;
+            this.OrderOfArrival = orderOfArrival;
+            this.Direction = direction;
+            this.Latitude = latitude;
+            this.Longitude = longitude;
+            this.DistanceFromPreviousStation = distanceFromPreviousStation;
+            this.IsMainTerminal = isMainTerminal;
+            this.IsActive = IsActive;
+            this.RouteName = routeName;
+            this.LineName = lineName;
+            this.LineID = lineID;
+        }
         [JsonProperty("ID")]
         public int DestinationID { get; set; }
         [JsonProperty("tblRouteID")]
@@ -28,6 +47,7 @@ namespace EvxWebAppCore.Models
         [JsonProperty("distanceFromPreviousStation")]
         public double DistanceFromPreviousStation { get; set; }
         [JsonProperty("isMainTerminal")]
+
         public int IsMainTerminal { get; set; }
         [JsonProperty("IsActive")]
         public int IsActive { get; set; }
