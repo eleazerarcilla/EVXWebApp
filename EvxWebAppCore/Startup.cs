@@ -56,8 +56,10 @@ namespace EvxWebAppCore
             services.AddSingleton<IRoute, RouteRepository>();
             services.AddSingleton<ILine, LineRepository>();
             services.AddSingleton<IDriver, DriverRepository>();
-            services.AddSingleton<IDestination, DestinationRepository>();
+            services.AddSingleton<IStation, StationRepository>();
             services.AddSingleton<IDevice, DeviceRepository>();
+            services.AddSingleton<IUser, UserRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             return services.BuildServiceProvider();
         }

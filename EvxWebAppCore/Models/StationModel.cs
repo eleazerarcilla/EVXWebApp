@@ -7,7 +7,7 @@ using static EvxWebAppCore.Common.GlobalEnums;
 
 namespace EvxWebAppCore.Models
 {
-    public class DestinationModel
+    public class StationModel
     {
         [JsonProperty("ID")]
         public int DestinationID { get; set; }

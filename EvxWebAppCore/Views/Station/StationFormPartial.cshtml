@@ -1,0 +1,15 @@
+﻿@using EvxWebAppCore.Models;
+@model StationModel
+    <input type="hidden" id="HiddenDynamicRouteId" value="@Model.TableRouteID" />
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<h2>Edit Pickup/Dropoff Station</h2>
+<input type="text" id="txtName" placeholder="Name" class="form-control" value="@Model.Description" />
+<br />
+<input type="number" id="txtLatitude" placeholder="Latitude" class="form-control" value="@Model.Latitude" />
+<br />
+<input type="number" id="txtLongitude" placeholder="Longitude" value="@Model.Longitude" class="form-control"/>
+<br />
+<button type="button" class="btn btn-success">Update Station</button>
+<button type="button" class="btn btn-danger">Delete Station</button>

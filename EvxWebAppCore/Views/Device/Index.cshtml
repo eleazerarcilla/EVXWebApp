@@ -1,0 +1,68 @@
+﻿@using EvxWebAppCore.Models
+@using Newtonsoft.Json
+@model List<DeviceModel>
+    <div class="partial">
+
+        <div class="scrollable">
+            @foreach (DeviceModel entry in Model)
+            {
+                bool IsOffline = entry.DeviceStatus.Contains("offline", StringComparison.CurrentCultureIgnoreCase) ? true : false;
+                <div class="alert alert-@(IsOffline ? "danger" : "success")" role="alert" style="cursor:pointer"
+                     onmouseover="mouseOverEffect(this)" onmouseout="mouseOutEffect(this)"
+                     onclick="Manage('DevicesForm','@JsonConvert.SerializeObject(entry)')"
+                     data-gpsinfo="@JsonConvert.SerializeObject(entry)">
+                    <h3 class="alert-heading">@(entry.DeviceName)</h3>
+                    <p>@entry.DeviceStatus</p>
+                </div>
+                <div class="alert alert-@(IsOffline ? "danger" : "success")" role="alert" style="cursor:pointer"
+                     onmouseover="mouseOverEffect(this)" onmouseout="mouseOutEffect(this)"
+                     onclick="Manage('DevicesForm','@entry.DeviceName')"
+                     data-gpsinfo="@JsonConvert.SerializeObject(entry)">
+                    <h3 class="alert-heading">@(entry.DeviceName)</h3>
+                    <p>@entry.DeviceStatus</p>
+                </div>
+                
+            }
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+ 
+    $("#secondPage").hide();
+    $("#firstPage").show();
+    function mouseOverEffect(obj) {
+        if (obj.classList.contains("alert-danger"))
+            obj.style.backgroundColor = "#f5e9e9";
+        else if (obj.classList.contains("alert-success"))
+            obj.style.backgroundColor = "#e8f2e4";
+    }
+
+    function mouseOutEffect(obj) {
+
+        if (obj.classList.contains("alert-danger"))
+            obj.style.backgroundColor = "#f2dede";
+        else if (obj.classList.contains("alert-success"))
+            obj.style.backgroundColor = "#dff0d8";
+    }
+    function openGPSDetails(obj) {
+  
+        var device = obj.dataset.gpsinfo;
+        $.ajax({
+            url: "/api/Device/GPSFormPartial",
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            data: device,
+            success : function(result) {
+                 $("#firstPage").hide();
+                $('#nextPageDynamicContent').html(result);
+
+                $('#secondPage').show();
+                $("#ManageModalBackButton").show();
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        });
+    }
+</script>

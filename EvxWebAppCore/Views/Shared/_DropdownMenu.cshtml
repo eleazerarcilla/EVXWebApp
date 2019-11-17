@@ -1,0 +1,41 @@
+﻿@using EvxWebAppCore.ViewModel
+@using EvxWebAppCore.Common
+@using EvxWebAppCore.Models
+@using Newtonsoft.Json
+
+@model DropdownViewModel
+
+@if (Model.RecordType.Equals(GlobalEnums.RecordType.Line))
+{
+    LineModel lineModel = (LineModel)Model.Object;
+    <div id='@("dropdown" + lineModel.LineID)' style="display:none" class="dropdown">
+
+        <div class="dropdown-option dropdown_view" onclick="Manage('Routes', @lineModel.LineID, '@lineModel.LineName')">View Routes</div>
+        <div class="dropdown-option dropdown_edit" onclick="Manage('LineForm','@JsonConvert.SerializeObject(lineModel)')"> Edit Line </div>
+        <div class="dropdown-option dropdown_delete" onclick="Delete(@lineModel.LineID, '@Model.RecordType')">Delete </div>
+
+        </div>
+}
+
+<script>
+    
+</script>
+<style>
+    .dropdown {
+        position: absolute;
+        background-color: #ececec;
+        border: 1px solid #adadad;
+    }
+
+    .dropdown-option {
+        cursor: pointer;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+        .dropdown-option:hover {
+            background-color: #e3e3e3
+        }
+</style>

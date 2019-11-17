@@ -7,8 +7,7 @@
 </div>
 <div id="appdrawer">
     <div id="drawerheader">
-        <span class="helper"></span>
-        <img id="drawerlogo" src="~/images/EVXperienceLogo.png" />
+        <img id="drawerlogo" src="images/EVXperienceLogo.png" />
     </div>
     <div class="drawermenu">
         @*<div class="menuitem"><a href="#"><span class="glyphicon glyphicon-home"> Home</span></a></div>
@@ -20,14 +19,6 @@
         <div class="menuitem"><a href="#"><span class="glyphicon glyphicon-cog"> Account Management </span></a></div>
         <div class="menuitem"><a href="<?php echo site_url('Main/logout')?>"><span class="glyphicon glyphicon-off"> Logout</span></a></div>
         <div class="menuitem"><a href="#"><span class="glyphicon glyphicon-thumbs-up"> Feedback</span></a></div>*@
-        @{
-            if (IsLoggedIn)
-            {
-                <label class="NavBarUserName">
-                    &nbsp;@Model.username&nbsp;
-                </label>
-            }
-        }
         <button class="btn @(IsLoggedIn ? "btn-danger": "btn-success") my-2 my-sm-0" data-toggle="modal" @(IsLoggedIn ? "onClick=InitiateLogout()" : "data-target=#LoginModal")>@(IsLoggedIn ? "Logout" : "Login")</button>
     </div>
 </div>

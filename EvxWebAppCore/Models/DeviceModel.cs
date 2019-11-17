@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace EvxWebAppCore.Models
         public int DeviceID { get; set; }
         [JsonProperty("attributes")]
         public object Attributes { get; set; }
+        
         [JsonProperty("name")]
         public string DeviceName { get; set; }
         [JsonProperty("uniqueId")]
@@ -34,5 +36,8 @@ namespace EvxWebAppCore.Models
         public string Category { get; set; }
         [JsonProperty("disabled")]
         public string Disabled { get; set; }
+
+        [JsonProperty("networkList")]
+        public List<SelectListItem> networkList { get; set; }
     }
 }

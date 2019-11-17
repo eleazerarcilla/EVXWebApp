@@ -8,6 +8,14 @@ namespace EvxWebAppCore.Models
 {
     public class LineModel
     {
+        public LineModel(int lineID, string lineName, int adminUserID, string adminUserName)
+        {
+            this.LineID = lineID;
+            this.LineName = lineName;
+            this.AdminUserID = adminUserID;
+            this.AdminUserName = adminUserName;
+        }
+
         [JsonProperty("ID")]
         public int LineID { get; set; }
         [JsonProperty("Name")]

@@ -1,0 +1,17 @@
+﻿@using EvxWebAppCore.Models;
+@model DeviceModel
+<style>
+    
+</style>
+<h3>@Model.DeviceName</h3>
+<input type="text" id="txtMobileNumber" class="form-control" placeholder="Mobile Number" value="@Model.Contact" />
+<br />
+<input type="text" id="txtIMEI" class="form-control" placeholder="IMEI" value="@Model.UniqueID"/>
+<br />
+
+@Html.DropDownList("Network", Model.networkList, "Select a value", new { @class = "form-control" })
+
+<br />
+
+<button type="button" class="btn btn-success">Update GPS</button>
+<button type="button" class="btn btn-danger">Delete GPS</button>

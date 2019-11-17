@@ -38,6 +38,70 @@ namespace EvxWebAppCore.Models.Repositories
             }
             return null;
         }
+        public async Task<CrudApiReturn> AddLine(string newLineName, int newAdminUserID)
+        {
+            try
+            {
+                var crudApiReturn = await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(
+                    new RequestData
+                    {
+                        APIBaseAddress = _requestData.APIBaseAddress,
+                        Method = HttpMethod.Post,
+                        FunctionName = "lines/addLine.php",
+                        ContentType = "application/x-www-form-urlencoded",
+                        JSONData = $"lineName={newLineName}&adminUserID={newAdminUserID}"
+                    })));
+                return crudApiReturn;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return null;
+        }
+        public async Task<CrudApiReturn> UpdateLine(int lineID, string newLineName, int newAdminUserID)
+        {
+            try
+            {
+                var crudApiReturn = await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(
+                    new RequestData
+                    {
+                        APIBaseAddress = _requestData.APIBaseAddress,
+                        Method = HttpMethod.Post,
+                        FunctionName = "lines/updateLine.php",
+                        ContentType= "application/x-www-form-urlencoded",
+                        JSONData = $"lineID={lineID}&newLineName={newLineName}&newAdminUserID={newAdminUserID}"
+                    })));
+                return crudApiReturn;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return null;
+        }
+
+        public async Task<CrudApiReturn> DeleteLine(int lineID)
+        {
+            try
+            {
+                var crudApiReturn = await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(
+                    new RequestData
+                    {
+                        APIBaseAddress = _requestData.APIBaseAddress,
+                        Method = HttpMethod.Get,
+                        FunctionName = "lines/deleteLine.php",
+                        Parameters = $"?lineID={lineID}"
+                    })));
+
+                return crudApiReturn;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return null;
+        }
 
     }
 }

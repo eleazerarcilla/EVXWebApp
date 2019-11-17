@@ -5,20 +5,14 @@
     bool IsLoggedIn = Model != null ? true : false;
 }
 <link rel="stylesheet" href="~/css/app/Index.css" asp-append-version="true" />
-<input type="hidden" id="AdminID" value="@(IsLoggedIn ? Model.UserID: null)"/>
-<div class="body-content" id="mapBody">
-    <div id="content"><div id="map"></div></div>
-    <div id="infowindow-content">
-        <img src="" width="16" height="16" id="place-icon">
-        <span id="place-name" class="title"></span><br>
-        <span id="place-address"></span>
-    </div>
-</div>
+<input type="hidden" id="AdminID" value="@(IsLoggedIn ? Model.UserID: 0)"/>
+<div id="map"></div>
+    
 @{
     if (IsLoggedIn)
     {
         <div id="fab"></div>
-        <partial name="_ManageModalPartial"/>;
+        @*<partial name="_ManageModalPartial"/>*@;
     }
 }
 

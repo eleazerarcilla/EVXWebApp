@@ -1,0 +1,106 @@
+﻿@using EvxWebAppCore.ViewModel
+@using EvxWebAppCore.Models
+@model LineFormViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+    <form method="post" action="" id="frmLine" accept-charset="utf-8">
+        <input type="hidden" id="AdminID" value="@Model.Line.AdminUserID" />
+        <input type="text" class="form-control" id="txtLineName" value="@Model.Line.LineName" required />
+        <br />
+        <select id="selAdmin" class="form-control">
+            @foreach (UserDetailModel userdetail in Model.AdminUsers)
+            {
+                @if (userdetail.ID.Equals(Model.Line.AdminUserID))
+                {
+                    <option id="@userdetail.ID" selected>@userdetail.username</option>
+                }
+                else
+                {
+                    <option id="@userdetail.ID">@userdetail.username</option>
+                }
+
+            }
+        </select>
+        <br />
+        @if (Model.Line.LineID != 0)
+        {
+            <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Line"/>
+        }
+        else
+        {
+            <input type="submit" class="btn btn-success" id="btnAdd" value="Add Line"/>
+        }
+
+    </form>
+
+<script>
+    $("#frmLine").submit(function (e) {
+        
+        e.preventDefault();
+        if ($("#btnAdd")) {
+            Add($('#txtLineName').val(), $('#selAdmin option:selected').attr('id'))
+        }
+        else if ($("#btnUpdate")) {
+            Update(@Model.Line.LineID, $('#txtLineName').val(), $('#selAdmin option:selected').attr('id'));
+        }
+    })
+    function Update(lineID, newLineName, newAdminUserID) {
+        
+       
+        $.ajax({
+            url: window.location.href + "api/Line/UpdateLine",
+            method: "POST",
+            data: { lineID: lineID, newLineName: newLineName, newAdminUserID: newAdminUserID },
+            beforeSend: function () {
+                $("#btnUpdate").html("Updating Line...");
+                $("#btnUpdate").attr("disabled", true);
+            },
+            success: function (result) {
+                if (result.status == "true") {
+                    $("#btnUpdate").html("Update Line");
+                    $("#btnUpdate").attr("disabled", false);
+                    alert('Line successfully update');
+                }
+                else {
+                     alert(result.message);
+                     $("#btnUpdate").html("Update Line");
+                     $("#btnUpdate").attr("disabled", false);
+                }
+               
+            },
+            error: function (result) {
+
+            }
+
+        })
+    }
+    function Add(newLineName, newAdminUserID) {
+         $.ajax({
+            url: window.location.href + "api/Line/AddLine",
+            method: "POST",
+            data: { newLineName: newLineName, newAdminUserID: newAdminUserID },
+            beforeSend: function () {
+                $("#btnAdd").html("Adding Line...");
+                $("#btnAdd").attr("disabled", true);
+            },
+             success: function (result) {
+                 
+                 if (result.status == "true") {
+                     alert('Line successfully added!');
+                     Manage('Lines', $("#AdminID").val());
+                 }
+                 else {
+                     alert(result.message);
+                     $("#btnAdd").html("Add Line");
+                     $("#btnAdd").attr("disabled", false);
+                 }
+                 
+            },
+            error: function (result) {
+                alert("An error occured");
+            }
+
+        })
+    }
+</script>

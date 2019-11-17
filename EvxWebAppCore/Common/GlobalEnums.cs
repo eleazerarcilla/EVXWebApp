@@ -16,5 +16,11 @@ namespace EvxWebAppCore.Common
             CW,
             CCW
         }
+        public enum RecordType
+        {
+            Line,
+            Route,
+            Station
+        }
     }
 }

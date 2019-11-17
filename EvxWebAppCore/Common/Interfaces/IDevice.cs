@@ -9,5 +9,8 @@ namespace EvxWebAppCore.Common.Interfaces
     public interface IDevice
     {
         Task<List<DeviceModel>> GetDevices();
+        Task<List<DeviceModel>> UpdateDevice(DeviceModel device);
+        Task<List<DeviceModel>> DeleteDevice(DeviceModel device);
+        
     }
 }

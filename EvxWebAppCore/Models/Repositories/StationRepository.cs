@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace EvxWebAppCore.Models.Repositories
 {
-    public class DestinationRepository: IDestination
+    public class StationRepository: IStation
     {
         Logger _logger = LogManager.GetLogger("EVX-APIRequestHelper");
         private readonly RequestData _requestData;
-        public DestinationRepository(IOptions<RequestData> requestData)
+        public StationRepository(IOptions<RequestData> requestData)
         {
             _requestData = requestData.Value;
         }
-        public async Task<List<DestinationModel>> GetDestinations(int RouteID)
+        public async Task<List<StationModel>> GetStations(int RouteID)
         {
             try
             {
-                return await Task.FromResult(JsonConvert.DeserializeObject<List<DestinationModel>>(await new APIRequestHelper().SendRequest(new RequestData
+                return await Task.FromResult(JsonConvert.DeserializeObject<List<StationModel>>(await new APIRequestHelper().SendRequest(new RequestData
                 {
                     APIBaseAddress = _requestData.APIBaseAddress,
                     Method = HttpMethod.Get,

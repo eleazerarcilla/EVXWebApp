@@ -52,7 +52,7 @@ function InitiateLogin(url) {
 }
 
 function ProcessNavBar() {
-    $.get(window.location.href + "/home/_NavBarPartial", function (result) {
+    $.get("/home/_NavBarPartial", function (result) {
         $('#navbarContent').html(result);
     });
 }
@@ -95,7 +95,7 @@ function ClearTextboxes(textboxesArray) {
 }
 
 function ProcessStationList() {
-    $.get(window.location.href + "api/destination/getdestinations", function (result) {
+    $.get(window.location.href + "api/station/getstations", function (result) {
         stationList = result;
         initMap();
     });
@@ -111,7 +111,11 @@ function InitiateLogout() {
 function ToggleLoader() {
     $('#Loader').css('display', ($('#Loader').css('display') === "block" ? "none" : "block"));
 }
-
+function ClearManageModalContents() {
+    $("#Loader").css('display', 'block');
+    $('#ManageModalBackButton').css('display', 'none');
+    $("#DynamicContent").text('');
+}
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
@@ -132,11 +136,14 @@ function initMap() {
         }
     };
     for (var i = 0; i < stationList.length; i++) {
+      
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(stationList[i].Lat, stationList[i].Lng),
             icon: icons['station'].icon,
             map: map
         });
+        var stationDescription = stationList[i].Description;
+        addClickHandler(marker, stationDescription);
     }
     var card = document.getElementById('pac-card');
     var input = document.getElementById('pac-input');
@@ -152,9 +159,13 @@ function initMap() {
     setupClickListener('changetype-establishment', ['establishment']);
     setupClickListener('changetype-geocode', ['geocode']);
 }
+function addClickHandler(stationMarker, stationDescription) {
+    google.maps.event.addListener(stationMarker, 'click', function () {
+        alert(stationDescription);
+    });
+}
 window.setInterval(
     function () {
-        var phpStringForStationMarker;
         var icons = {
             vehicle: {
                 icon: phpStringForStationMarker + 'images/vehiclemarker.png'

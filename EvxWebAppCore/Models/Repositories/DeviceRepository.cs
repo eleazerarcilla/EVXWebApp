@@ -35,5 +35,15 @@ namespace EvxWebAppCore.Models.Repositories
             }
             return null;
         }
+
+        public Task<List<DeviceModel>> UpdateDevice(DeviceModel device)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<DeviceModel>> DeleteDevice(DeviceModel device)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

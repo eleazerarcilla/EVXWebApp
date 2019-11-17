@@ -1,8 +1,30 @@
 ﻿@using EvxWebAppCore.Models
+@using EvxWebAppCore.ViewModel
+@using EvxWebAppCore.Common
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
 @model List<LineModel>
-@foreach(LineModel entry in Model)
-{
-   <div  class="button-list-default-margin">
-       <button  type="button" class="btn btn-secondary btn-lg btn-block" onclick="Manage('Routes',@(entry.LineID),'@(entry.LineName)')">@entry.LineName</button>
-   </div>
-}
+
+    <div class="">
+        @foreach (LineModel entry in Model)
+        {
+            <div class="button-list-default-margin">
+
+                @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Line })
+
+                <button type="button" class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.LineID)">@entry.LineName</button>
+            </div>
+
+        }
+        @{UserDetailModel currentLoggedIn = HttpContextAccessor.HttpContext.Session.SessionGet<UserDetailModel>("user");}
+        @{ LineModel emptyLineModel = new LineModel(0, "", currentLoggedIn.UserID, currentLoggedIn.username);}
+        <div class="addnewrow">
+            <button type="button" class="btn btn-lg btn-block addnewrow"
+                    onclick= "Manage('LineForm','@JsonConvert.SerializeObject(emptyLineModel)')">
+                <span class="glyphicon glyphicon-plus"></span>   Add New Line
+            </button>
+        </div>
+    </div>
+<script type="text/javascript" src="~/js/app/Shared/_dropdown.js"></script>
+

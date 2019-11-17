@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EvxWebAppCore.Common.Interfaces
 {
-    public interface IDestination
+    public interface IStation
     {
-        Task<List<DestinationModel>> GetDestinations(int RouteID);
+        Task<List<StationModel>> GetStations(int RouteID);
     }
 }
