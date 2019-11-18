@@ -1,5 +1,7 @@
-﻿using EvxWebAppCore.Common.Interfaces;
+﻿using EvxWebAppCore.Common;
+using EvxWebAppCore.Common.Interfaces;
 using EvxWebAppCore.Models;
+using EvxWebAppCore.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,15 +23,28 @@ namespace EvxWebAppCore.Controllers
         [HttpGet("ViewRoutes")]
         public async Task<IActionResult> ViewRoutes(int LineID = 0)
         {
-           
-                return PartialView("RoutesPartial", await _routeRepository.GetRoute(LineID));
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
+            return PartialView("RoutesPartial", await _routeRepository.GetRoute(LineID));
             
 
         }
         [Route("RouteFormPartial")]
         [HttpPost]
-        public async Task<IActionResult> RouteFormPartial([FromBody]RouteModel route)
+        public IActionResult RouteFormPartial([FromBody]RouteModel route)
         {
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
             return PartialView(route);
         }
 

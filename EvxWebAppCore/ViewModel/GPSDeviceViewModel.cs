@@ -21,6 +21,7 @@ namespace EvxWebAppCore.ViewModel
             if (device != null)
             {
                 Device = device;
+                Device.DeviceName = $"EVX_{device.UniqueID.GetLast(5)}";
                 MapDeviceModelToPHPModel(device);
                 Device.Model = string.IsNullOrEmpty(device.Model) ? string.Empty : device.Model;
                 Device.networkList = new List<SelectListItem>();

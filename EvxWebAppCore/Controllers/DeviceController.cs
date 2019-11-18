@@ -27,6 +27,13 @@ namespace EvxWebAppCore.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
             return PartialView(await _deviceRepository.GetDevices());
         }
 
@@ -49,12 +56,26 @@ namespace EvxWebAppCore.Controllers
         {
             try
             {
+                UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+                if (user == null)
+                    return PartialView("_ErrorPartial", new ErrorViewModel
+                    {
+                        ErrorMessage = "Session expired. Please login to continue.",
+                        ErrorCode = 1
+                    });
                 GPSDeviceViewModel GPSViewModel = new GPSDeviceViewModel(device);
-                GPSViewModel.Lines.AddRange(GlobalHelpers.GenerateSelectListForLines(await _lineRepository.GetLines(HttpContext.Session.SessionGet<UserDetailModel>("user").ID), GPSViewModel.DevicePHP));
-                GPSViewModel.Drivers.AddRange(GlobalHelpers.GenerateSelectListForDrivers(await _driverRepository.GetDrivers(HttpContext.Session.SessionGet<UserDetailModel>("user").ID)));
+                GPSViewModel.Lines.AddRange(GlobalHelpers.GenerateSelectListForLines(await _lineRepository.GetLines(user.ID), GPSViewModel.DevicePHP));
+                GPSViewModel.Drivers.AddRange(GlobalHelpers.GenerateSelectListForDrivers(await _driverRepository.GetDrivers(user.ID)));
                 return PartialView(GPSViewModel);
             }
-            catch (Exception ex) { return BadRequest(ex); }
+            catch (Exception ex)
+            {
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = ex.GetBaseException().Message,
+                    ErrorCode = 2
+                });
+            }
 
         }
         [Route("AddDevice")]
@@ -63,6 +84,7 @@ namespace EvxWebAppCore.Controllers
         {
             try
             {
+
                 return Ok(await _deviceRepository.AddDevice(device));
             }
             catch (Exception ex)
@@ -84,10 +106,13 @@ namespace EvxWebAppCore.Controllers
             }
         }
         [HttpGet("DeleteDevice/{deviceId}")]
-        public async Task<IActionResult> DeleteDevice (int deviceId)
+        public async Task<IActionResult> DeleteDevice(int deviceId)
         {
             try
             {
+                UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+                if (user == null)
+                    return Ok(new CrudApiReturn { status = "false", message="Session expired. Please login to continue."});
                 return Ok(await _deviceRepository.DeleteDevice(deviceId));
             }
             catch (Exception ex)

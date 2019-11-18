@@ -163,7 +163,6 @@ function Manage(type, dynamicVar1, dynamicVar2) {
 
             break;
         case 'LineForm':
-            
             var line = dynamicVar1;
             $("#ManageModalTitle").text(dynamicVar1.Name);
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Lines');");
@@ -249,8 +248,8 @@ function ModalDeleteItem(type, Id) {
                         alert("Succesfully deleted GPS device!");
                         Manage('Devices');
                     }
-                else
-                    alert("Unable to delete GPS device." + result.message);
+                    else
+                    alert("Unable to delete GPS device. " + result.message);
                 }) : null;
             break;
     }

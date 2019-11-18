@@ -1,0 +1,11 @@
+﻿@using EvxWebAppCore.ViewModel
+@model ErrorViewModel
+<div>
+    <h2>@($"{Model.ErrorMessage} - {Model.ErrorCode}")</h2>
+    <div>@Model.Exception</div>
+    @if (Model.ErrorCode == 1)
+    {
+        <br/>
+        <a class="btn btn-success" href="@Url.Action("Index","Home")">Login</a>
+    }
+</div>

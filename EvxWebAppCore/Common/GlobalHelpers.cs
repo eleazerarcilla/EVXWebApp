@@ -71,6 +71,10 @@ namespace EvxWebAppCore.Common
             }
             return result;
         }
+        public static string GetLast(this string entry, int substring)
+        {
+            return substring > entry.Length ? entry : entry.Substring(entry.Length - 5);
+        }
 
 
     }

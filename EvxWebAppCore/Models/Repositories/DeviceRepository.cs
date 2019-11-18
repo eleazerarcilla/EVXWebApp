@@ -23,12 +23,13 @@ namespace EvxWebAppCore.Models.Repositories
         {
             try
             {
-                return await Task.FromResult(JsonConvert.DeserializeObject<List<DeviceModel>>(await new APIRequestHelper().SendRequest(new RequestData
+                string t = await new APIRequestHelper().SendRequest(new RequestData
                 {
                     APIBaseAddress = _requestData.APIBaseAddress,
                     Method = HttpMethod.Get,
                     FunctionName = "/devices/getDevices.php"
-                })));
+                });
+                return await Task.FromResult(JsonConvert.DeserializeObject<List<DeviceModel>>(t));
             }
             catch (Exception ex)
             {

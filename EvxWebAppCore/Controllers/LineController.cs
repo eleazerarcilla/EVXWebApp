@@ -35,6 +35,13 @@ namespace EvxWebAppCore.Controllers
         [HttpGet("ViewLines/{adminID}")]
         public async Task<IActionResult> ViewLines(int adminID = 0)
         {
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
             return PartialView("LinesPartial", await _lineRepository.GetLines(adminID));
         }
 
@@ -42,9 +49,14 @@ namespace EvxWebAppCore.Controllers
         [HttpPost]
         public async Task<IActionResult> LineFormPartial([FromBody]LineModel line)
         {
-            
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
             List<UserDetailModel> userList = await _userRepository.GetUsers(GlobalEnums.UserTypes.Administrator.ToString());
-
             LineFormViewModel lineFormViewModel = new LineFormViewModel(line, userList);
             return PartialView(lineFormViewModel);
         }

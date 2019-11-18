@@ -1,10 +1,7 @@
 ﻿@using EvxWebAppCore.ViewModel;
 @model GPSDeviceViewModel
-
-<script src="~/js/app/Device/Device.js" asp-append-version="true"></script>
 <input type="hidden" id="txtDeviceID" value="@Model.Device.DeviceID" />
-<br />
-<input type="text" id="txtDeviceName" class="form-control" placeholder="Device name" value="@Model.Device.DeviceName" />
+<input type="hidden" id="txtDeviceName" value="@Model.Device.DeviceName"/>
 <br />
 <input type="text" id="txtIMEI" class="form-control" placeholder="IMEI" value="@Model.Device.UniqueID" />
 <br />
@@ -20,3 +17,4 @@
 @Html.DropDownList("Drivers", Model.Drivers, "Assign driver...", new { @class = "form-control" })
 <br />
 <button type="button" class="btn btn-success" onclick="AddUpdateDevice();">Update GPS</button>
+<script src="~/js/app/Device/Device.js" asp-append-version="true"></script>

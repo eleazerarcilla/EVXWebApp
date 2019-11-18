@@ -1,5 +1,7 @@
-﻿using EvxWebAppCore.Common.Interfaces;
+﻿using EvxWebAppCore.Common;
+using EvxWebAppCore.Common.Interfaces;
 using EvxWebAppCore.Models;
+using EvxWebAppCore.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,13 @@ namespace EvxWebAppCore.Controllers
         {
             try
             {
+                UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+                if (user == null)
+                    return PartialView("_ErrorPartial", new ErrorViewModel
+                    {
+                        ErrorMessage = "Session expired. Please login to continue.",
+                        ErrorCode = 1
+                    });
                 return PartialView("StationsPartial", await _stationRepository.GetStations(RouteID));
             }
             catch (Exception ex)
@@ -44,6 +53,13 @@ namespace EvxWebAppCore.Controllers
         [HttpPost]
         public IActionResult StationFormPartial([FromBody]StationModel station)
         {
+            UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+            if (user == null)
+                return PartialView("_ErrorPartial", new ErrorViewModel
+                {
+                    ErrorMessage = "Session expired. Please login to continue.",
+                    ErrorCode = 1
+                });
             return PartialView(station);
         }
 
