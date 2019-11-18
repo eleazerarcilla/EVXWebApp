@@ -115,6 +115,7 @@ function ClearManageModalContents() {
     $("#Loader").css('display', 'block');
     $('#ManageModalBackButton').css('display', 'none');
     $("#DynamicContent").text('');
+    $("#DeleteItem").css("display", "none");
 }
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {

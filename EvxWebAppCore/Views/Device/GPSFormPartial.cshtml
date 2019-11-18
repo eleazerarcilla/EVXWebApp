@@ -1,17 +1,22 @@
-﻿@using EvxWebAppCore.Models;
-@model DeviceModel
-<style>
-    
-</style>
-<h3>@Model.DeviceName</h3>
-<input type="text" id="txtMobileNumber" class="form-control" placeholder="Mobile Number" value="@Model.Contact" />
+﻿@using EvxWebAppCore.ViewModel;
+@model GPSDeviceViewModel
+
+<script src="~/js/app/Device/Device.js" asp-append-version="true"></script>
+<input type="hidden" id="txtDeviceID" value="@Model.Device.DeviceID" />
 <br />
-<input type="text" id="txtIMEI" class="form-control" placeholder="IMEI" value="@Model.UniqueID"/>
+<input type="text" id="txtDeviceName" class="form-control" placeholder="Device name" value="@Model.Device.DeviceName" />
+<br />
+<input type="text" id="txtIMEI" class="form-control" placeholder="IMEI" value="@Model.Device.UniqueID" />
+<br />
+<input type="text" id="txtMobileNumber" class="form-control" placeholder="Mobile number" value="@Model.Device.Contact">
+<br />
+<input type="text" id="txtPlateNumber" class="form-control" placeholder="Plate number" value="@Model.Device.Model">
 <br />
 
-@Html.DropDownList("Network", Model.networkList, "Select a value", new { @class = "form-control" })
-
+@Html.DropDownList("Network", Model.Device.networkList, "Select a network...", new { @class = "form-control" })
 <br />
-
-<button type="button" class="btn btn-success">Update GPS</button>
-<button type="button" class="btn btn-danger">Delete GPS</button>
+@Html.DropDownList("Lines", Model.Lines, "Select a line...", new { @class = "form-control" })
+<br />
+@Html.DropDownList("Drivers", Model.Drivers, "Assign driver...", new { @class = "form-control" })
+<br />
+<button type="button" class="btn btn-success" onclick="AddUpdateDevice();">Update GPS</button>

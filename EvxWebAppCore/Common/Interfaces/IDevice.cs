@@ -9,8 +9,9 @@ namespace EvxWebAppCore.Common.Interfaces
     public interface IDevice
     {
         Task<List<DeviceModel>> GetDevices();
-        Task<List<DeviceModel>> UpdateDevice(DeviceModel device);
-        Task<List<DeviceModel>> DeleteDevice(DeviceModel device);
-        
+        Task<CrudApiReturn> DeleteDevice(int deviceID);
+        Task<CrudApiReturn> AddDevice(DeviceModelPHP device);
+        Task<CrudApiReturn> UpdateDevice(DeviceModelPHP device);
+
     }
 }

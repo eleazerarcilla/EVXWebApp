@@ -75,7 +75,6 @@ var fab = new Fab({
     }
 });
 function Manage(type, dynamicVar1, dynamicVar2) {
-    
     ClearManageModalContents();
     $("#ManageModal").modal('show');
     switch (type) {
@@ -94,20 +93,11 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
             break;
         case 'Devices':
-            
             $("#ManageModalTitle").text("GPS Devices");
-            $()
             $.get("/api/device/", function (result) {
                 ToggleLoader();
                 $('#DynamicContent').html(result);
             });
-            break;
-            //window.location.replace("/api/device/");
-            //$.get("")
-            //$.get("/api/device/ViewDevices/", function (result) {
-            //    ToggleLoader();
-            //    $('#DynamicContent').html(result);
-            //});
             break;
         case 'Stations':
             $("#ManageModalTitle").text("Stations under " + dynamicVar2);
@@ -129,9 +119,11 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
             break;
         case 'DevicesForm':
-            
             var device = dynamicVar1;
-            $("#ManageModalTitle").text(dynamicVar1.DeviceName);
+            var deviceOBJ = JSON.parse(dynamicVar1);
+            $("#ManageModalTitle").text(deviceOBJ.name);
+            $("#DeleteItem").css("display", "block");
+            $("#DeleteItem").attr('onclick', "ModalDeleteItem('Devices','" + deviceOBJ.id + "');");
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Devices');");
             $('#ManageModalBackButton').css('display', 'block');
             $.ajax({
@@ -246,5 +238,20 @@ function ManageModalBackButtonClicked(type) {
             Manage('Devices', $("#AdminID").val()); break;
         case 'Stations':
             Manage('Stations', $("#HiddenDynamicRouteId").val()); break;
+    }
+}
+function ModalDeleteItem(type, Id) {
+    switch (type) {
+        case 'Devices':
+            confirm("Are you sure you want to delete this device?") ?
+            $.get('/api/device/deleteDevice/' + Id, function (result) {
+                    if (result) {
+                        alert("Succesfully deleted GPS device!");
+                        Manage('Devices');
+                    }
+                else
+                    alert("Unable to delete GPS device." + result.message);
+                }) : null;
+            break;
     }
 }

@@ -170,3 +170,7 @@ input.addnewrow {
 input.addnewrow:hover {
     background-color: #e6e6e6;  
 }
+.modal-delete-btn{
+    margin-top:5px;
+    display: none;
+}
