@@ -26,11 +26,16 @@ namespace EvxWebAppCore.ViewModel
                 Device.Model = string.IsNullOrEmpty(device.Model) ? string.Empty : device.Model;
                 Device.networkList = new List<SelectListItem>();
                 Device.networkList.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Globe", "Globe",
-                    device.Model.Equals("Globe", StringComparison.OrdinalIgnoreCase) ? true : false));
+                    Device.Model.Equals("Globe", StringComparison.OrdinalIgnoreCase) ? true : false));
 
                 Device.networkList.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Smart", "Smart",
-                    device.Model.Equals("Smart", StringComparison.OrdinalIgnoreCase) ? true : false));
-               
+                    Device.Model.Equals("Smart", StringComparison.OrdinalIgnoreCase) ? true : false));
+            }
+            else
+            {
+                Device.networkList = new List<SelectListItem>();
+                Device.networkList.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Globe", "Globe", false));
+                Device.networkList.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem("Smart", "Smart", false));
             }
         }
         public void MapDeviceModelToPHPModel(DeviceModel device)

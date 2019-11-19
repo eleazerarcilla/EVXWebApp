@@ -84,12 +84,15 @@ namespace EvxWebAppCore.Controllers
         {
             try
             {
-
+                UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
+                if (user == null)
+                    return Ok(new CrudApiReturn { status = "false", message = "Session expired. Please login to continue." });
+                device.name = $"EVX_{device.uniqueId.GetLast(5)}";
                 return Ok(await _deviceRepository.AddDevice(device));
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return Ok(new CrudApiReturn { status = "false", message = ex.GetBaseException().Message });
             }
         }
         [Route("UpdateDevice")]
@@ -112,7 +115,7 @@ namespace EvxWebAppCore.Controllers
             {
                 UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
                 if (user == null)
-                    return Ok(new CrudApiReturn { status = "false", message="Session expired. Please login to continue."});
+                    return Ok(new CrudApiReturn { status = "false", message = "Session expired. Please login to continue." });
                 return Ok(await _deviceRepository.DeleteDevice(deviceId));
             }
             catch (Exception ex)

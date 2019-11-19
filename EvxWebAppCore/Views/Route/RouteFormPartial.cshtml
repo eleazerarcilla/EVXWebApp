@@ -3,7 +3,8 @@
 
 <form method="post" action="" id="frmRoute" accept-charset="utf-8">
     <input type="hidden" id="HiddenDynamicLineID" value="@Model.TableLineID" />
-    <input type="text" class="form-control" id="txtRouteName" value="@Model.RouteName" required />
+    <label>New Route name:</label>
+    <input type="text" class="form-control" id="txtRouteName" placeholder="e.g. Filinvest RITM" value="@Model.RouteName" required />
     <br />
     <br />
     @if (Model.RouteID != 0)

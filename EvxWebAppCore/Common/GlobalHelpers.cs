@@ -52,7 +52,7 @@ namespace EvxWebAppCore.Common
                 {
                     Text = entry.LineName,
                     Value = entry.LineID.ToString(),
-                    Selected = entry.LineID == devicePHP.tblLineID
+                    Selected = devicePHP != null ? (entry.LineID == devicePHP.tblLineID) : false
                 });
             }
             return result;

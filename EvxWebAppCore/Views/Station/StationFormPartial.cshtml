@@ -1,31 +1,27 @@
 ﻿@using EvxWebAppCore.Models;
 @model StationModel
-    <input type="hidden" id="HiddenDynamicRouteId" value="@Model.TableRouteID" />
+<input type="hidden" id="HiddenDynamicRouteId" value="@Model.TableRouteID" />
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
 <h2>Edit Pickup/Dropoff Station</h2>
 <form method="post" action="" id="frmStation" accept-charset="utf-8">
-    
-    <input type="text" id="txtName" placeholder="Name" class="form-control" value="@Model.Description" />
+    <label>New Station name:</label>
+    <input type="text" id="txtName" placeholder="e.g. Opp Vivere Hotel" class="form-control" value="@Model.Description" />
     <br />
-    <input type="number" id="txtLatitude" placeholder="Latitude" class="form-control" value="@Model.Latitude" />
+    <label>Station Latitude:</label>
+    <input type="number" id="txtLatitude" placeholder="e.g. 14.42576" class="form-control" value="@Model.Latitude" />
     <br />
-    <input type="number" id="txtLongitude" placeholder="Longitude" value="@Model.Longitude" class="form-control" />
+    <label>Station Longitude:</label>
+    <input type="number" id="txtLongitude" placeholder="e.g. 121.03981" value="@Model.Longitude" class="form-control" />
     <br />
-    
-    <input type="checkbox" id="chkIsMainTerminal" value="" checked="@(Model.IsMainTerminal==1?true:false)"/>Mark this as main pick-up/drop-off station
-    @if (Model.DestinationID != 0)
-    {
-        <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Station" />
-    }
-    else
-    {
-        <input type="submit" class="btn btn-success" id="btnAdd" value="Add Station" />
-    }
-
-
+    <div class="form-check">
+        <input type="checkbox" id="chkIsMainTerminal" class="form-check-input" id="chkIsMainTerminal" checked="@(Model.IsMainTerminal==1?true:false)">
+        <label class="form-check-label" for="chkIsMainTerminal" style="margin-left: 20px;">Mark this as main pick-up/drop-off station</label>
+    </div>
+    <br />
+    <input type="submit" class="btn btn-success" id="@(Model.DestinationID != 0 ? "btnUpdate" : "btnAdd")" value="@(Model.DestinationID != 0 ? "Update" : "Add") Station" />
 </form>
 <script>
      $("#frmStation").submit(function (e) {
@@ -33,7 +29,7 @@
         e.preventDefault();
         var isMainTerminal = $("#chkIsMainTerminal:checked").length > 0 ? 1 : 0;
          if ($("#btnAdd").length) {
-             
+
              Add($('#txtName').val(), $("#txtLatitude").val(), $("#txtLongitude").val(), $("#HiddenDynamicRouteId").val(), "", isMainTerminal);
         }
         else if ($("#btnUpdate").length) {
@@ -41,7 +37,7 @@
         }
     })
     function Update(id, name, lat, lng, tblRouteID, direction,isMainTerminal) {
-     
+
         $.ajax({
             url: window.location.href + "api/Station/UpdateStation",
             method: "POST",
@@ -61,7 +57,7 @@
                      $("#btnUpdate").html("Update Station");
                      $("#btnUpdate").attr("disabled", false);
                 }
-               
+
             },
             error: function (result) {
 
@@ -69,7 +65,7 @@
 
         })
     }
-    
+
     function Add(value, lat, lng, tblRouteID, direction, isMainTerminal) {
          $.ajax({
             url: window.location.href + "api/Station/AddStation",
@@ -80,7 +76,7 @@
                 $("#btnAdd").attr("disabled", true);
             },
              success: function (result) {
-                 
+
                  if (result.status == "true") {
                      alert('Station successfully added!');
                      Manage('Stations', $("#HiddenDynamicRouteId").val());
@@ -90,7 +86,7 @@
                      $("#btnAdd").html("Add Station");
                      $("#btnAdd").attr("disabled", false);
                  }
-                 
+
             },
             error: function (result) {
                 alert("An error occured");

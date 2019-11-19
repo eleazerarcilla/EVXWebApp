@@ -56,7 +56,7 @@ var fab = new Fab({
         {
             button: {
                 style: "large green",
-                html:"Reports"
+                html: "Reports"
             },
             icon: {
                 style: "chart line icon",
@@ -109,7 +109,7 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
             break;
         case 'Routes':
-            
+
             $("#ManageModalTitle").text("Routes under " + dynamicVar2);
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Lines');");
             $('#ManageModalBackButton').css('display', 'block');
@@ -119,30 +119,42 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
             break;
         case 'DevicesForm':
-            var device = dynamicVar1;
-            var deviceOBJ = JSON.parse(dynamicVar1);
-            $("#ManageModalTitle").text(deviceOBJ.name);
-            $("#DeleteItem").css("display", "block");
-            $("#DeleteItem").attr('onclick', "ModalDeleteItem('Devices','" + deviceOBJ.id + "');");
+            //0 - Add, 1 - Update
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Devices');");
             $('#ManageModalBackButton').css('display', 'block');
+            var device = null, deviceOBJ = null;
+            if (dynamicVar1 != 0) {
+                device = dynamicVar1;
+                deviceOBJ = JSON.parse(dynamicVar1);
+                $("#ManageModalTitle").text(deviceOBJ.name);
+                $("#DeleteItem").css("display", "block");
+                $("#DeleteItem").attr('onclick', "ModalDeleteItem('Devices','" + deviceOBJ.id + "');");
+              
+           
+            } else {
+                $("#ManageModalTitle").text('Add new GPS device');
+                $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Devices');");
+                $('#ManageModalBackButton').css('display', 'block');
+            }
             $.ajax({
                 url: "/api/Device/GPSFormPartial",
                 method: "post",
                 contentType: "application/json; charset=utf-8",
-                data: device,
+                data: device === null ? null : device,
                 success: function (result) {
                     ToggleLoader();
                     $('#DynamicContent').html(result);
+                    $('#btnSaveGPS').attr('onclick', 'AddUpdateDevice('+(dynamicVar1 != 0 ? 1 : 0)+')');
                 },
                 error: function (request, status, error) {
                     console.log(request.responseText);
                 }
             });
 
+         
             break;
         case 'StationForm':
-            
+
             var station = dynamicVar1;
             $("#ManageModalTitle").text(dynamicVar1.Name);
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Stations');");
@@ -243,13 +255,13 @@ function ModalDeleteItem(type, Id) {
     switch (type) {
         case 'Devices':
             confirm("Are you sure you want to delete this device?") ?
-            $.get('/api/device/deleteDevice/' + Id, function (result) {
+                $.get('/api/device/deleteDevice/' + Id, function (result) {
                     if (result) {
                         alert("Succesfully deleted GPS device!");
                         Manage('Devices');
                     }
                     else
-                    alert("Unable to delete GPS device. " + result.message);
+                        alert("Unable to delete GPS device. " + result.message);
                 }) : null;
             break;
     }

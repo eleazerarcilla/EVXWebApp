@@ -47,7 +47,7 @@ namespace EvxWebAppCore.Models.Repositories
                     APIBaseAddress = _requestData.APIBaseAddress,
                     Method = HttpMethod.Get,
                     FunctionName = "devices/createDevices.php",
-                    Parameters = $"?name={device.name}&uniqueId={device.uniqueId}&model={device.model}&plateNumber={device.plateNumber}&tblRoutesID={device.tblRoutesID}&tblUsersID={device.tblUsersID}&tblLineID={device.tblLineID}"
+                    Parameters = $"?name={device.name}&uniqueId={device.uniqueId}&model={device.model}&plateNumber={device.plateNumber}&phoneNo={device.phoneNo}&tblRoutesID={device.tblRoutesID}&tblUsersID={device.tblUsersID}&tblLineID={device.tblLineID}"
                 })));
             }
             catch (Exception ex)

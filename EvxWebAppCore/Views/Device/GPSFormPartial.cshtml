@@ -3,18 +3,25 @@
 <input type="hidden" id="txtDeviceID" value="@Model.Device.DeviceID" />
 <input type="hidden" id="txtDeviceName" value="@Model.Device.DeviceName"/>
 <br />
-<input type="text" id="txtIMEI" class="form-control" placeholder="IMEI" value="@Model.Device.UniqueID" />
+<label>GPS device IMEI:</label>
+<input type="text" id="txtIMEI" class="form-control" placeholder="e.g. 087071234567" value="@Model.Device.UniqueID" />
 <br />
-<input type="text" id="txtMobileNumber" class="form-control" placeholder="Mobile number" value="@Model.Device.Contact">
-<br />
-<input type="text" id="txtPlateNumber" class="form-control" placeholder="Plate number" value="@Model.Device.Model">
+<label>Mobile number:</label>
+<input type="text" id="txtMobileNumber" class="form-control" placeholder="e.g. 09191234567" value="@Model.Device.Contact">
 <br />
 
+<label>Plate number:</label>
+<input type="text" id="txtPlateNumber" class="form-control" placeholder="e.g. AED 2997" value="@Model.Device.Model">
+<br />
+
+<label>GPS network service provider:</label>
 @Html.DropDownList("Network", Model.Device.networkList, "Select a network...", new { @class = "form-control" })
 <br />
+<label>This GPS will be under Line:</label>
 @Html.DropDownList("Lines", Model.Lines, "Select a line...", new { @class = "form-control" })
 <br />
+<label>This GPS will be handled by driver:</label>
 @Html.DropDownList("Drivers", Model.Drivers, "Assign driver...", new { @class = "form-control" })
 <br />
-<button type="button" class="btn btn-success" onclick="AddUpdateDevice();">Update GPS</button>
+<button id="btnSaveGPS" type="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
 <script src="~/js/app/Device/Device.js" asp-append-version="true"></script>

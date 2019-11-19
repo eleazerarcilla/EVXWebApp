@@ -4,35 +4,37 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-    <form method="post" action="" id="frmLine" accept-charset="utf-8">
-        <input type="hidden" id="AdminID" value="@Model.Line.AdminUserID" />
-        <input type="text" class="form-control" id="txtLineName" value="@Model.Line.LineName" required />
-        <br />
-        <select id="selAdmin" class="form-control">
-            @foreach (UserDetailModel userdetail in Model.AdminUsers)
+<form method="post" action="" id="frmLine" accept-charset="utf-8">
+    <input type="hidden" id="AdminID" value="@Model.Line.AdminUserID" />
+    <label>New Line name:</label>
+    <input type="text" class="form-control" id="txtLineName" placeholder="e.g. Filinvest" value="@Model.Line.LineName" required />
+    <br />
+    <label>This line will be managed by:</label>
+    <select id="selAdmin" class="form-control">
+        @foreach (UserDetailModel userdetail in Model.AdminUsers)
+        {
+            @if (userdetail.ID.Equals(Model.Line.AdminUserID))
             {
-                @if (userdetail.ID.Equals(Model.Line.AdminUserID))
-                {
-                    <option id="@userdetail.ID" selected>@userdetail.username</option>
-                }
-                else
-                {
-                    <option id="@userdetail.ID">@userdetail.username</option>
-                }
-
+                <option id="@userdetail.ID" selected>@userdetail.username</option>
             }
-        </select>
-        <br />
-        @if (Model.Line.LineID != 0)
-        {
-            <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Line"/>
-        }
-        else
-        {
-            <input type="submit" class="btn btn-success" id="btnAdd" value="Add Line"/>
-        }
+            else
+            {
+                <option id="@userdetail.ID">@userdetail.username</option>
+            }
 
-    </form>
+        }
+    </select>
+    <br />
+    @if (Model.Line.LineID != 0)
+    {
+        <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Line" />
+    }
+    else
+    {
+        <input type="submit" class="btn btn-success" id="btnAdd" value="Add Line" />
+    }
+
+</form>
 
 <script>
     $("#frmLine").submit(function (e) {
