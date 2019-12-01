@@ -36,10 +36,11 @@ $("body").off().on('click', function (e) {
 
 })
 function Delete(id, recordtype) {
-    
+    debugger;
     var url;
     var type;
     var dynamicVar1, dynamicVar2;
+    
     if (confirm("Are you sure you want to delete this " + recordtype + "?")) {
         if (recordtype == 'Line') {
             url = window.location.href + "api/Line/DeleteLine?lineID=" + id;
@@ -52,6 +53,7 @@ function Delete(id, recordtype) {
             dynamicVar1 = $("#HiddenDynamicLineID").val();
         }
         else if (recordtype == 'Station') {
+            debugger;
             url = window.location.href + "api/Station/DeleteStation?destinationid=" + id;
             type = 'Stations';
             dynamicVar1 = $("#HiddenDynamicRouteId").val();
@@ -66,6 +68,7 @@ function Delete(id, recordtype) {
             success: function (result) {
                 
                 alert(recordtype + " successfully deleted");
+                debugger;
                 Manage(type, dynamicVar1);
 
             },

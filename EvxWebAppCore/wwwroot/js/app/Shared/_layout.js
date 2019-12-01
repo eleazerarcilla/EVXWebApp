@@ -178,6 +178,7 @@ window.setInterval(
         };
 
         var createMarker = function (latitude, longitude) {
+            
             var id = uniqueId(); // get new id
             var marker = new google.maps.Marker({ // create a marker and set id
                 id: id,
@@ -213,13 +214,17 @@ window.setInterval(
                 },
                 url: "https://samm-6bab0.firebaseio.com/drivers.json",
                 success: function (result) {
+                    
                     clearVehicleMarker();
 
                     Object.keys(result).forEach(function (key) {
-                        if (result[key].PrevLat != result[key].Lat && result[key].PrevLng != result[key].Lng) {
+                        //if (result[key].PrevLat != result[key].Lat && result[key].PrevLng != result[key].Lng) {
                             createMarker(result[key].Lat, result[key].Lng);
-                        }
+                        //}
                     });
+                },
+                error: function (request, status, error) {
+                    
                 }
             });
     }, 5000);

@@ -78,6 +78,30 @@ namespace EvxWebAppCore.Models.Repositories
             }
             return null;
         }
+        public async Task<CrudApiReturn> UpdateStationOrder(string pointsArray, int tblRouteID)
+        {
+            
+            pointsArray = pointsArray.Replace("&station[]=", ",");
+            pointsArray = pointsArray.Replace("station[]=", "");
+            try
+            {
+                var crudApiReturn = await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(
+                    new RequestData
+                    {
+                        APIBaseAddress = _requestData.APIBaseAddress,
+                        Method = HttpMethod.Post,
+                        ContentType = "application/x-www-form-urlencoded",
+                        FunctionName = "destinations/saveDestinationsOrder.php",
+                        JSONData = $"pointsArray={pointsArray}&tblRouteID={tblRouteID}"
+                    })));
+                return crudApiReturn;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return null;
+        }
 
         public async Task<CrudApiReturn> DeleteStation(int destinationid)
         {

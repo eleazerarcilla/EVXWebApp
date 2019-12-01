@@ -100,6 +100,8 @@ function Manage(type, dynamicVar1, dynamicVar2) {
             });
             break;
         case 'Stations':
+            debugger;
+            $("#ManageModalSaveButton").show();
             $("#ManageModalTitle").text("Stations under " + dynamicVar2);
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Routes');");
             $('#ManageModalBackButton').css('display', 'block');
@@ -157,6 +159,7 @@ function Manage(type, dynamicVar1, dynamicVar2) {
 
             var station = dynamicVar1;
             $("#ManageModalTitle").text(dynamicVar1.Name);
+            $("#ManageModalSaveButton").hide();
             $("#ManageModalBackButton").attr('onclick', "ManageModalBackButtonClicked('Stations');");
             $('#ManageModalBackButton').css('display', 'block');
             $.ajax({

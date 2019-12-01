@@ -13,6 +13,7 @@ namespace EvxWebAppCore.Common.Interfaces
 
         Task<CrudApiReturn> AddStation(string value, double lat, double lng, int tblRouteID, string direction, int isMainterminal);
         Task<CrudApiReturn> UpdateStation(int id, string name, double lat, double lng, int tblRouteID, string direction, int isMainterminal);
+        Task<CrudApiReturn> UpdateStationOrder(string pointsArray, int tblRouteID);
         Task<CrudApiReturn> DeleteStation(int destinationid);
 
     }

@@ -5,19 +5,34 @@
 @using Newtonsoft.Json
 @model List<StationModel>
 <input type="hidden" id="HiddenDynamicLineID" value="@Model.FirstOrDefault().LineID" />
+<input type="hidden" id="HiddenDynamicRouteId" value="@Model.FirstOrDefault().TableRouteID" />
 <div class="scrollable">
-    @foreach (StationModel entry in Model)
-    {
+    <ul id="sortable">
+        @foreach (StationModel entry in Model)
+        {
+            @*<li class="default">
+                <div class="button-list-default-margin">
+                    @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Station })
+                    <button type="button" class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.DestinationID)">@entry.Description</button>
 
-        <div class="button-list-default-margin">
-            @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Station })
-            <button type="button" class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.DestinationID)">@entry.Description</button>
+                </div>
+            </li>*@
+            <li class="button-list-default-margin default" id="@("station_" + entry.Value)">
+                <div class="button-list-default-margin">
+                    @Html.Partial("~/Views/Shared/_DropdownMenu.cshtml", new DropdownViewModel { Object = entry, RecordType = GlobalEnums.RecordType.Station })
+                    <label class="btn btn-secondary btn-lg btn-block btnOpenDropdown" data-dropdownid="@("dropdown" + entry.DestinationID)">
+                        @entry.Description
+                    <span class="glyphicon glyphicon-menu-hamburger" style="float:right"/>
+                    </label>
+                    
 
-        </div>
-    }
-    @{ StationModel emptyStationModel = new StationModel(0, @Model.FirstOrDefault().TableRouteID, "", "", 
-           0, "", 0,0, 0,0, 1,@Model.FirstOrDefault().RouteName, @Model.FirstOrDefault().LineName,
-           @Model.FirstOrDefault().LineID);}
+                </div>
+            </li>
+        }
+    </ul>
+    @{ StationModel emptyStationModel = new StationModel(0, @Model.FirstOrDefault().TableRouteID, "", "",
+            0, "", 0, 0, 0, 0, 1, @Model.FirstOrDefault().RouteName, @Model.FirstOrDefault().LineName,
+            @Model.FirstOrDefault().LineID);}
 
     <div class="addnewrow">
         <button type="button" class="btn btn-lg btn-block addnewrow"
@@ -26,4 +41,53 @@
         </button>
     </div>
 </div>
+
 <script type="text/javascript" src="~/js/app/Shared/_dropdown.js"></script>
+
+<script>
+    var data;
+    $("#ManageModalSaveButton").click(function () {
+        $.ajax({
+
+            url: window.location.href + "api/Station/UpdateStationOrder",
+            method: "POST",
+            data: { pointsArray: data, tblRouteID: @Model.FirstOrDefault().TableRouteID},
+            beforeSend: function () {
+                $("#ManageModalSaveButton").html("Saving changes...");
+                $("#ManageModalSaveButton").attr("disabled", true);
+            },
+            success: function (result) {
+                if (result.status == "true") {
+                    $("#ManageModalSaveButton").html("Save Changes");
+                    $("#ManageModalSaveButton").attr("disabled", false);
+                    alert('Station order successfully updated');
+                }
+                else {
+                     alert(result.message);
+                     $("#ManageModalSaveButton").html("Save Changes");
+                     $("#ManageModalSaveButton").attr("disabled", false);
+                }
+               
+            },
+            error: function (result) {
+
+            }
+
+        })
+    });
+    $(function () {
+        $("#sortable").sortable({
+            update: function (event, ui) {
+                debugger;
+                data = $(this).sortable('serialize');
+            }
+        });
+    });
+</script>
+
+<style>
+    #sortable{
+        list-style-type:none;
+        padding-inline-start:0!important
+    }
+</style>

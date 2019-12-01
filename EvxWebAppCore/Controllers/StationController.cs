@@ -81,6 +81,20 @@ namespace EvxWebAppCore.Controllers
             }
 
         }
+
+        [HttpPost("UpdateStationOrder")]
+        public async Task<IActionResult> UpdateStationOrder(string pointsArray, int tblRouteID)
+        {
+            try
+            {
+                return Ok(await _stationRepository.UpdateStationOrder(pointsArray, tblRouteID));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpPost("AddStation")]
         public async Task<IActionResult> AddStation(string value, 
             double lat, double lng, 
