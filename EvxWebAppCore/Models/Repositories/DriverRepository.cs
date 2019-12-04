@@ -36,5 +36,65 @@ namespace EvxWebAppCore.Models.Repositories
             }
             return null;
         }
+
+        public async Task<CrudApiReturn> AddDriver(string username, string firstname, string lastname, string password, int tblLineID)
+        {
+            try
+            {
+                return await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(new RequestData
+                {
+                    APIBaseAddress = _requestData.APIBaseAddress,
+                    Method = HttpMethod.Post,
+                    ContentType = "application/x-www-form-urlencoded",
+                    FunctionName = "users/driver/add.php",
+                    JSONData = $"username={username}&firstname={firstname}&lastname={lastname}&password={password}&tblLineID={tblLineID}"
+                }))); ;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return new CrudApiReturn { status = "false" };
+        }
+
+        public async Task<CrudApiReturn> UpdateDriver(int userID, string newusername, string newfirstname, string newlastname, int newLineID)
+        {
+            try
+            {
+                return await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(new RequestData
+                {
+                    APIBaseAddress = _requestData.APIBaseAddress,
+                    Method = HttpMethod.Post,
+                    ContentType = "application/x-www-form-urlencoded",
+                    FunctionName = "driver/edit.php",
+                    JSONData = $"userID={userID}&newusername={newusername}&newfirstname={newfirstname}&newlastname={newlastname}&newlineid={newLineID}"
+                }))); ;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return new CrudApiReturn { status = "false" };
+        }
+
+        public async Task<CrudApiReturn> DeleteDriver(int userID)
+        {
+            try
+            {
+                return await Task.FromResult(JsonConvert.DeserializeObject<CrudApiReturn>(await new APIRequestHelper().SendRequest(new RequestData
+                {
+                    APIBaseAddress = _requestData.APIBaseAddress,
+                    Method = HttpMethod.Post,
+                    ContentType = "application/x-www-form-urlencoded",
+                    FunctionName = "driver/delete.php",
+                    JSONData = $"userID={userID}"
+                }))); ;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+            }
+            return new CrudApiReturn { status = "false" };
+        }
     }
 }

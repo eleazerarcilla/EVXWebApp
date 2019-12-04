@@ -46,6 +46,9 @@ namespace EvxWebAppCore.Models
         [JsonProperty("IsActive")]
         public string IsActive { get; set; }
 
+        [JsonProperty("tblLineID")]
+        public int tblLineID { get; set; }
+
     }
 }
 

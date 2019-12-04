@@ -1,12 +1,14 @@
 ﻿@using EvxWebAppCore.Models
 @model List<UserDetailModel>
-@foreach (UserDetailModel entry in Model)
-{
-    string FullName = $"{entry.firstName} {entry.lastName}";
-    <div class="alert alert-primary clickable" role="alert" title="Click to edit @(FullName)">
-        <h3 class="alert-heading">@(FullName)</h3>
-        <hr />
-        <p>@entry.username</p>
-        <p><i>@entry.emailAddress</i></p>
+    <div class="scrollable">
+        @foreach (UserDetailModel entry in Model)
+        {
+            string FullName = $"{entry.firstName} {entry.lastName}";
+            <div class="alert alert-primary clickable" role="alert" title="Click to edit @(FullName)" typeof="">
+                <h3 class="alert-heading">@(FullName)</h3>
+                <hr />
+                <p><b>Username: </b>@entry.username  |  <b>Email Address: </b>@entry.emailAddress</p>
+            </div>
+        }
     </div>
-}
+    

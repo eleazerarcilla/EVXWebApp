@@ -52,20 +52,20 @@ var fab = new Fab({
             onClick: function () {
                 Manage('Drivers', $("#AdminID").val());
             }
-        },
-        {
-            button: {
-                style: "large green",
-                html: "Reports"
-            },
-            icon: {
-                style: "chart line icon",
-                html: ""
-            },
-            onClick: function () {
-                alert("REPORTS");
-            }
-        }
+        
+        //{
+        //    button: {
+        //        style: "large green",
+        //        html: "Reports"
+        //    },
+        //    icon: {
+        //        style: "chart line icon",
+        //        html: ""
+        //    },
+        //    onClick: function () {
+        //        alert("REPORTS");
+        //    }
+        //}
     ],
     onOpen: function () {
 

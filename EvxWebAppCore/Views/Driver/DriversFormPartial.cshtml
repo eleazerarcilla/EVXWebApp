@@ -1,0 +1,142 @@
+﻿@using EvxWebAppCore.ViewModel
+@using EvxWebAppCore.Models
+@model DriverFormViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+    <form method="post" action="" id="frmDriver" accept-charset="utf-8">
+        @*<input type="hidden" id="AdminID" value="@Model.Line.AdminUserID" />*@
+        <label>First Name:</label>
+        <input type="text" class="form-control" id="txtFirstName" placeholder="First Name" value="@Model.Driver.firstName" required />
+        <br />
+        <label>Last Name:</label>
+        <input type="text" class="form-control" id="txtLastName" placeholder="Last Name" value="@Model.Driver.lastName" required />
+        <br />
+        <label>Username:</label>
+        <input type="text" class="form-control" id="txtUsername" placeholder="First Name" value="@Model.Driver.username" required />
+        <br />
+        <label>This driver is assigned under:</label>
+        <select id="selLine" class="form-control">
+            @foreach (LineModel line in Model.Lines)
+            {
+                @if (line.LineID.Equals(Model.Driver.tblLineID))
+                {
+                    <option id="@line.LineID" selected>@line.LineName</option>
+                }
+                else
+                {
+                    <option id="@line.LineID">@line.LineName</option>
+                }
+
+            }
+        </select>
+        <br/>
+        <input type="checkbox" id="chkShowPassword" /> Show Password
+        <br />
+        <input type="password" class="form-control" id="txtPassword" placeholder="Password" required/>
+        <br/>
+        <input type="password" class="form-control" id="txtConfirmPassword" placeholder="Confirm Password" required/> 
+        <br/>
+        <label id="lblError" style="color:red"></label>"
+        s
+        @if (Model.Driver.ID != 0)
+        {
+            <input type="submit" class="btn btn-success" id="btnUpdate" value="Update Driver" />
+        }
+        else
+        {
+            <input type="submit" class="btn btn-success" id="btnAdd" value="Add Driver" />
+        }
+
+    </form>
+
+<script>
+    $("#txtPassword").on('blur', function () {
+        validatePasswords();
+    });
+    $("#txtConfirmPassword").on('blur', function () {
+        validatePasswords();
+    });
+    $("#frmDriver").submit(function (e) {
+
+        e.preventDefault();
+
+        if ($("#btnAdd").length) {
+
+            Add($("#txtFirstName").val(), $("#txtLastName").val(), $("#txtUserName").val(),
+                $("#txtPassword").val(), $("#selLine option:selected").attr('id'));
+
+        }
+        else if ($("#btnUpdate").length) {
+            Update(@Model.Driver.ID, $("#txtFirstName").val(), $("#txtLastName").val(), $("#txtUserName").val(),
+                $("#txtPassword").val(), $("#selLine option:selected").attr('id'));
+        }
+    });
+    function validatePasswords() {
+         if ($("#txtPassword").val() != $("#txtConfirmPassword").val()) {
+            $("lblError").html("Passwords do not match");
+        }
+        else {
+            $("#lblError").html("");
+        }
+    }
+    function Update(driverID, firstname, lastname, username, password, lineID) {
+
+
+        $.ajax({
+            url: window.location.href + "api/Driver/UpdateLine",
+            method: "POST",
+            data: { lineID: lineID, newLineName: newLineName, newAdminUserID: newAdminUserID },
+            beforeSend: function () {
+                $("#btnUpdate").html("Updating Line...");
+                $("#btnUpdate").attr("disabled", true);
+            },
+            success: function (result) {
+                if (result.status == "true") {
+                    $("#btnUpdate").html("Update Line");
+                    $("#btnUpdate").attr("disabled", false);
+                    alert('Line successfully updated');
+                }
+                else {
+                     alert(result.message);
+                     $("#btnUpdate").html("Update Line");
+                     $("#btnUpdate").attr("disabled", false);
+                }
+
+            },
+            error: function (result) {
+
+            }
+
+        })
+    }
+    function Add(newLineName, newAdminUserID) {
+         $.ajax({
+            url: window.location.href + "api/Line/AddLine",
+            method: "POST",
+            data: { newLineName: newLineName, newAdminUserID: newAdminUserID },
+            beforeSend: function () {
+                $("#btnAdd").html("Adding Line...");
+                $("#btnAdd").attr("disabled", true);
+            },
+             success: function (result) {
+
+                 if (result.status == "true") {
+                     alert('Line successfully added!');
+                     Manage('Lines', $("#AdminID").val());
+                 }
+                 else {
+                     alert(result.message);
+                     $("#btnAdd").html("Add Line");
+                     $("#btnAdd").attr("disabled", false);
+                 }
+
+            },
+            error: function (result) {
+                alert("An error occured");
+            }
+
+        })
+    }
+</script>

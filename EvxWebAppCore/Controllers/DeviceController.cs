@@ -28,7 +28,7 @@ namespace EvxWebAppCore.Controllers
         public async Task<IActionResult> Index()
         {
             UserDetailModel user = HttpContext.Session.SessionGet<UserDetailModel>("user");
-            if (user == null)
+            if (user == null)   
                 return PartialView("_ErrorPartial", new ErrorViewModel
                 {
                     ErrorMessage = "Session expired. Please login to continue.",
